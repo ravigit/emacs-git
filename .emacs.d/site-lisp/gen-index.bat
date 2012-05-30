@@ -1,0 +1,1 @@
+find %1 | grep -E -v "Contrib|HTML|\.class|\.svn|\.hg|\.git|\.html|\.jar|\.pom|\.pom.sha1|Debug|Release|Master|bin"  > %1/index

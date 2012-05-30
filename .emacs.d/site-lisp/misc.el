@@ -1,0 +1,559 @@
+(require 'url)
+
+(defun my-browse-url (url)
+  (interactive "sBrowse: ")
+  (browse-url (concat "http://" url)))
+
+(defun sudo-shell-command (command) 
+  (shell-command (concat "echo " (read-passwd "Password: ") " | sudo -S " command)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Commenting code from http://www.tenfoot.org.uk/emacs/snippets.html
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar comment-insert-block-on-empty-line nil
+  "Whether to insert block comments on empty lines in comment-insert")
+
+(defun comment-insert ()
+  "Insert a new comment on current line"
+  (interactive)
+  (let ((empty-line (save-excursion (beginning-of-line) (looking-at "\\s-*$"))))
+    (if (and (not (equal (point) (point-at-bol)))
+             (save-excursion (backward-char) (looking-at "\\S-")))
+        ;; insert space if immediately preceding char not whitespace
+        (insert " "))
+    (insert comment-start)
+    (if (and empty-line comment-insert-block-on-empty-line)
+        (comment-indent-new-line))
+    (save-excursion
+      (if (and empty-line comment-insert-block-on-empty-line)
+          (insert-and-inherit ?\n))
+      (insert comment-end)
+      (indent-for-tab-command))
+    (indent-for-tab-command)))
+
+
+(defun comment-line-or-region (&optional comment-eol)
+  "comment the region if active otherwise comment the current line"
+  (interactive "P")
+  (if mark-active
+      ;; comment selection
+      (comment-region (point) (mark))
+    (if (or comment-eol
+            (save-excursion (beginning-of-line) (looking-at "\\s-*$")))
+        ;; insert comment at end of line
+        (comment-insert)
+      ;; comment whole line
+      (comment-region (point-at-bol) (point-at-eol)))))
+
+(defun uncomment-line-or-region ()
+  "uncomment the region if active otherwise comment the current line"
+  (interactive)
+  (if mark-active
+      (uncomment-region (point) (mark))
+    (uncomment-region (point-at-bol) (point-at-eol))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; full screen. Only works on linux ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun toggle-fullscreen (&optional f)
+      (interactive)
+      (let ((current-value (frame-parameter nil 'fullscreen)))
+           (set-frame-parameter nil 'fullscreen
+                                (if (equal 'fullboth current-value)
+                                    (if (boundp 'old-fullscreen) old-fullscreen nil)
+                                    (progn (setq old-fullscreen current-value)
+                                           'fullboth)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; end-commenting code.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun char-lowercasep (c)
+  (and (< c 123) (> c 96)))
+
+(defun char-capitalp (c)
+  (and (< c 91) (> c 64)))
+	  
+(defun decapitalize (str)
+  "Opposite of capitalize function. If the first char is capital case, it will be converted to lower case."
+  (let ((ls (string-to-list str)))
+	(if (char-capitalp (car ls))
+		(concat (cons (+ (car ls) 32) (cdr ls)))
+	  str)))
+
+(defun capitalize (str)
+  "Non interactive capitalize function. If the first char is capital case, it will be converted to lower case."
+  (let ((ls (string-to-list str)))
+	(if (char-lowercasep (car ls))
+		(concat (cons (- (car ls) 32) (cdr ls)))
+	  str)))
+
+
+(defun but-first (str)
+  "Strip the first letter in the string"
+  (concat (cdr (string-to-list str))))
+
+(defun javadoc-method-comment () 
+  ;; Insert a javadoc method comment at the cursor position 
+  (interactive) 
+  (insert 
+"/** 
+ * 
+ * 
+ * 
+ * 
+ * @param 
+ * @return
+ * @exeption
+ * @see 
+ */ 
+") 
+  (forward-line -8) 
+  (end-of-line))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Generate getters  ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+(defun gen-getter(vartype varname acc-spec)
+  "Generates a getter"
+  (interactive "sVartype: \nsVarname: \nsAccess specifier: ")
+  (with-current-buffer
+	  (progn
+		(insert (concat acc-spec " " vartype " get" (but-first varname) "()"))
+		(insert "\n{\n")
+		(insert (concat "\treturn " varname ";"))
+		(insert "\n}\n"))))
+
+
+(defun block-site (site)
+  "Blocks a site"
+  (interactive "sPlease enter the site to block: ")
+  (save-excursion
+	(if (equal system-type 'windows-nt)
+		(find-file "C:\\Windows\\system32\\drivers\\etc\\hosts")
+	  (find-file "/sudo::/etc/hosts"))
+	(if (eq (search-forward site nil t) nil)
+		(progn
+		  (goto-char (point-max))
+		  (insert (concat "127.0.0.1\t\t" site))
+		  (newline)
+		  (insert (concat "127.0.0.1\t\twww." site))
+		  (newline)
+		  (save-buffer))
+	  (print (concat "Site " site  " is already in hosts file")))
+	(kill-buffer)))
+
+
+(defun show-in-explorer ()
+  "Show the parent directory of the current buffer in windows explorer"
+  (interactive)
+  (shell-command (concat "explorer.exe " (replace-regexp-in-string "/" "\\\\" (replace-regexp-in-string (buffer-name) "" (buffer-file-name))))))
+
+	   
+;; (replace-regexp-in-string ";" "" (replace-regexp-in-string "\\." "/" (cadr (split-string "import a.b.c;"))))
+(defun switch-to-h-file ()
+  "switch to corresponding .h/.cpp file"
+  (interactive)
+   (let	((filename (reverse (string-to-list (buffer-file-name)))))
+	 (if (= (car filename) 112)
+		 (find-file (concat (reverse (cons 104 (cdddr filename)))))
+	   (if (= (car filename) 104)
+		   (find-file (concat (reverse (append '(112 112 99) (cdr filename)))))
+		 '()))))
+   
+
+(defun foldr (fn seed args)
+  (if (equal args '()) 
+	  seed
+	(foldr fn (funcall fn (car args) seed) (cdr args))))
+
+
+(defun get-arg-list (str)
+  (let ((ls (foldr (lambda (x res)
+		   (if (= x 59) 
+			   (cons (+ 1 (car res)) res)
+			 res)) 
+		 (list 0) (string-to-list str))))
+	(foldr (lambda (x res)
+			 (concat (number-to-string x) "," res)) (number-to-string (car ls)) (cdr ls))))
+
+;Generates well rendered diagrams from ascii art.
+(setq ditaa-cmd "java -jar C:/apps/ditaa.jar -E")
+(defun ditaa-generate ()
+  (interactive)
+  (shell-command
+    (concat ditaa-cmd " " buffer-file-name)))
+
+(defun ack (pattern)
+  (interactive "sAck grep for: ")
+  (shell-command (concat "ack-grep -i "  pattern " &")))
+
+(defun grep-it (pattern)
+  (interactive "sGrep for: ")
+  (grep (concat " -nH -e " pattern "*"))) 
+
+(defun recursive-grep (pattern)
+  (interactive "sRecursive Grep for: ")
+  (rgrep (concat "-nH -e " pattern " *")))
+
+(defun indent-buffer ()
+  "indent whole buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil))
+
+ 
+
+(defun decamelify-char (c)
+  (if (char-capitalp c)
+	  (concat "_" (char-to-string c))
+	(if (char-lowercasep c)
+		(char-to-string (- c 32))
+	  (char-to-string c))))
+
+(defun decamelify-label (str)
+  (apply #'concat (mapcar #'decamelify-char (string-to-list (decapitalize str)))))
+
+(defun decamelify-labels  ()
+  "Decamelify all labels(string which end with colon)"
+  (interactive)
+  (let (cb label)
+  (with-current-buffer cb
+	(setq label (search-forward ":"))) 
+	  label))
+
+(defun jad ()
+  "Run java disassembler on the current buffer"
+  (shell-command "jad" (buffer-file-name)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Close all emacs buffers ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Xahs documentation ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+(setq xah-doc-location "C:/Docume~1/QA_Testing/Desktop/xah_emacs_tutorial/")
+
+(defun xah-grep (xah-search)
+  "Search for a key word in xah's documentation"
+  (interactive "sxah-search:")
+  (let ((results (concat temporary-file-directory "xah_results.html")))
+	(start-file-process-shell-command  "Xah Grep" "Xah results" 
+									   (concat "find "  xah-doc-location "| xargs grep -nHe " xah-search  " > " results))
+	(pop-to-buffer "Xah results")
+	(browse-url (concat "file:///" results))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; enough beauty, use chrome ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun browse-url-chrome(url &optional new-window)
+  (interactive (browse-url-interactive-arg "URL: "))
+  (let ((out-buf "*Messages*"))
+	(start-process "chrome" out-buf "C:/Documents and Settings/QA_Testing/Local Settings/Application Data/Google/Chrome/Application/chrome.exe" url)))
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; browser for linux ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+(defun browse-url-linux(url &optional new-window)
+  (interactive (browse-url-interactive-arg "URL:"))
+  (let ((out-buf "*Messages*"))
+	(start-process "browser" out-buf "firefox" url)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; The beautiful Conkeror browser ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun browse-url-conkeror-browser (url &optional new-window)
+  (interactive (browse-url-interactive-arg "URL: "))
+  (let ((out-buf "*Messages*"))
+	(start-process "conkeror" out-buf "C:/apps/xulrunner/conkeror.bat" url)
+	(pop-to-buffer out-buf)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TODO: Implement clean function to delete all ~ and # files in the current dir ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun clean ())
+
+
+;;;;;;;;;;;;;;
+;; winmerge ;;
+;;;;;;;;;;;;;;
+(defun wdiff (buffer1 buffer2)
+  (interactive "sbuffer1:\nsbuffer2:")
+  (let ((tempdir "C:/WINDOWS/Temp/")
+		(winmerge "C:/Program Files/WinMerge/WinMergeU.exe"))
+	(let ((buf1 (get-buffer-create buffer1))
+		  (buf2 (get-buffer-create buffer2))
+		  (tempfile1 (buffer-file-name (get-buffer-create buffer1)))
+		  (tempfile2 (buffer-file-name (get-buffer-create buffer2))))
+	  (start-process "winmerge" nil winmerge tempfile1 tempfile2))))
+
+(cond ((equal system-type 'windows-nt)
+		(setq browse-url-browser-function 'browse-url-chrome))
+	   ((equal system-type 'gnu/linux)
+		(setq browse-url-browser-function 'browse-url-linux)))
+
+(defun run-cmd (mode name buffer-name cmd &rest params)
+  (progn
+    (if (not (eq (get-buffer buffer-name) nil))
+        (kill-buffer buffer-name))
+    (let* ((out-buf (get-buffer-create buffer-name))
+           (args (foldr 'cons params (list cmd
+                                           out-buf
+                                           name))))
+      (set-buffer out-buf)
+      (funcall mode)
+      (switch-to-buffer out-buf)
+      (apply 'start-process args)
+      (goto-char (point-min)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Show methods in the current buffer. Works only for java/C++ ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun show-methods ()
+  (interactive)
+  (let ((file (buffer-file-name (current-buffer))))
+    (progn
+      (message "In show methods")
+      (run-cmd 'grep-mode 
+               "grep " 
+               "*methods*" 
+               "grep" 
+               "-E" 
+               "(public|private|protected).*\(.*\)$" 
+               file))))
+
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Search and open if you only have only file, else show the output in buffer ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun search-index-internal (file str)
+    (run-cmd  'grep-mode 
+              "searcher" 
+              "*index-searcher*" 
+              "/ext/home/ravi/git_project/scripts/search.sh" 
+              "/ext/home/ravi/git_project/fileList" 
+              file str))
+
+(defun search-index(file str)
+  (interactive "sFile Pattern:\nsString Pattern:")
+  (search-index-internal file str))
+
+(defun word-at-point ()
+  ;; (interactive)
+  (with-current-buffer
+      (progn
+        (backward-word)
+        (let ((word-begin (region-beginning)))
+          (forward-word)
+          (let ((word-end (region-end)))
+            (buffer-substring word-begin word-end))))))
+
+(defun search-index-at-point()
+  (interactive)
+  (let ((word (word-at-point)))
+    (progn
+      (message (format "The word is %s" word))
+      (search-index-internal "*.java$" word))))
+
+(defun src-update ()
+  (interactive)
+  (progn
+    (run-cmd 'grep-mode 
+             "Update git_project" 
+             "*update-git-project*" 
+             "/ext/home/ravi/git_project/scripts/update.sh")))
+
+(defun ll-build (target)
+  (interactive 
+   (list (read-string "Target:")))
+  (run-cmd  'compilation-mode
+            "Build Sparkletabs" 
+            "*build-sparkletabs*" 
+            "/ext/home/ravi/git_project/scripts/llbuild.sh" 
+            "-p"
+            target))
+
+(defun ll-git-log (target &optional limit)
+  (interactive "sProject:\nsLimit-To:")
+  (run-cmd 'git-log-view-mode
+           "Git-Log" 
+           "*git-log*"  
+           "git"  
+           "log" 
+           "-l30"))
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; svn map functions ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+(defun svn-cmd (arg)
+  (run-cmd (concat "svn-map-" arg) (concat "*svn-" arg "*") "/ext/home/ravi/project/svn_map.sh" arg))
+
+(defun svn-map-update ()
+  (interactive) 
+  (svn-cmd "update"))
+
+(defun svn-map-status ()
+  (interactive)
+  (svn-cmd "status1"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; compile and install ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (defun compile-install(&optional compiletype reinstall)
+;;   (interactive ("sCompile[core|full|clean]:\nsReinstall[y|N]:"))
+;;   (let ((comp-cmd "make -C/ext/home/ravi/project/finder_sprint/trunk "))
+;;     (cond ((equal compiletype "core")
+;;            (compile 
+;;   (run-cmd "compile_and_run" "*compile_and_run*"
+
+(defun open-fileline ()
+  "Open a file from the path in the region"
+  (interactive)
+  (let* ((buf (buffer-substring (line-beginning-position) (line-end-position)))
+         (splits (split-string buf ":"))
+         (filename (car splits)))
+    (progn
+     (find-file filename)
+     (if (> (length splits) 1)
+         (let ((linenumber (string-to-number (cadr splits))))
+           (progn
+             (goto-char (point-min))
+             (forward-line (1- linenumber))))))))
+
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; Java-like string replace ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun string-replace (from to string &optional re)
+  "Replace all occurrences of FROM with TO in STRING.
+   All arguments are strings.
+   When optional fourth argument is non-nil, treat the from as a regular expression."
+  (progn
+	(setq case-fold-search nil)
+	(let ((pos 0)
+		  (res "")
+		  (from (if re from (regexp-quote from))))
+	  (while (< pos (length string))
+       (let ((beg (string-match from string pos)))
+         (if (not beg) 
+	     (progn
+	       (setq res (concat res
+				 (substring string pos (match-beginning 0))
+								to))
+			  (setq pos (match-end 0))
+			  (setq case-fold-search t))
+		  (progn
+			(setq res (concat res (substring string pos (length string))))
+			(setq pos (length string))
+			(setq case-fold-search t))))
+    res))))
+
+
+;;;;;;;;;;;;;;;;;
+;; Test only.  ;;
+;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Given a converter method that converts Type A to Type B, generate a converter ;;
+;; that converts from List<A> to List<B>                                         ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun printls (ls)
+    (let ((str (concat (apply 'concat ls) "\n")))
+      (insert str)
+      str))
+
+(defun mp (a b c)
+  (interactive "sa:\nsb:\nsc:")
+  (mapcar 'printls (list (list a b c) (list a b c))))
+
+(defun java-list (tA tB convert)
+  (interactive "sTypeA:\nsTypeB:\nsConverter:")
+  (let* ((varA (decapitalize tA))
+         (lsA (concat varA "s"))
+         (varB (decapitalize tB))
+         (lsB (concat varB "s"))
+         (nl  "\n")
+         (code 
+          "public List<tB> converts(List<tA> lsA) {
+              if (lsA == null) {
+                 return null;
+              }
+               
+              List<tB> lsB = new ArrayList<tB>();
+              for(varA: lsA) {
+                 lsB.add(convert(varA));
+              }  
+           }"))
+         (insert 
+          (string-replace "tA" tA 
+                         (string-replace "tB" tB
+                                         (string-replace "convert" convert code))))))
+                         
+                         
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Transpose window orientation from                     ;;
+;; https://github.com/fivecommits/split-window-transpose ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun transpose-window-orientation (&optional arg)
+  "Switch between horizontal and vertical 2-window layouts"
+  (interactive "p")
+  (if (eq 2 (count-windows))
+      (let* ((sel-w (selected-window))
+             (fw (frame-width (window-frame sel-w)))
+             (ww (window-width))
+             (left-top-right-bottom (window-edges sel-w))
+             (sel-left (nth 0 left-top-right-bottom))
+             (sel-top (nth 1 left-top-right-bottom))
+             (is-left-top)
+             (vis-w)
+             (other-w))
+        (progn
+          ;; save other buffer
+          (defun get-other-window ()
+            (walk-windows
+             (function (lambda(w)
+                 (if (not (equal w (selected-window)))
+                     (push w vis-w)))))
+             (car vis-w))
+          (setq other-b (window-buffer (get-other-window)))
+
+          ;; clear other window
+          (delete-other-windows)
+
+          ;; determine which way to transpose
+          (if (= fw ww)
+              (split-window-horizontally)
+            (split-window-vertically))
+
+          ;; determine whether it's left/top or right/bottom
+          (if (or (> sel-left 0) (> sel-top 0))
+              ;; right bottom
+              (progn
+                (set-window-buffer (selected-window) other-b)
+                (other-window 1))
+            (progn
+              (setq other-w (get-other-window))
+              (set-window-buffer other-w other-b)))))))
+
+;(defun switch-window transpose-window-orientation)
+
+(provide 'misc)
+
+
+
+
+
+    
+
+
+
+
+

@@ -1,0 +1,25 @@
+(add-to-list 'load-path "~/.emacs.d/emms/lisp")
+
+(load "volume.el")
+(require 'emms-setup)
+(emms-standard)
+(emms-default-players)
+;;(emms-add-directory-tree "~/Music")
+
+(global-set-key   (kbd "C-c y 0")  'emms-playlist-mode-go)
+(global-set-key   (kbd "C-c y 1")  'emms-next)
+(global-set-key   (kbd "C-c y 2")  'emms-previous)
+(global-set-key   (kbd "C-c y 9")  'emms-stop)
+
+(global-set-key   [f12] 'emms-playlist-mode-go)
+(global-set-key   [f11] 'emms-stop) 
+(global-set-key   [f10] 'volume-lower)
+(global-set-key   [f9]  'volume-raise) 
+   
+(global-set-key (kbd "C-c m") 'toggle-fullscreen)
+
+(custom-set-faces
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 103 :width normal)))))
+
+
+(provide 'emacs-linux)

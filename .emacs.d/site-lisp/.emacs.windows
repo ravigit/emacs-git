@@ -1,0 +1,11 @@
+
+(add-to-list 'load-path "~/.emacs.d/w32-fullscreen")
+(require 'darkroom-mode)  
+(require 'powershell)
+
+
+(global-set-key (kbd "C-c m") 'w32-fullscreen)
+
+
+
+(provide 'emacs-windows)
