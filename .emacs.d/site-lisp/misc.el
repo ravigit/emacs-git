@@ -1,11 +1,25 @@
 (require 'url)
 
+(setq xah-doc-location "C:/Docume~1/QA_Testing/Desktop/xah_emacs_tutorial/")
+
 (defun my-browse-url (url)
   (interactive "sBrowse: ")
   (browse-url (concat "http://" url)))
 
-(defun sudo-shell-command (command) 
-  (shell-command (concat "echo " (read-passwd "Password: ") " | sudo -S " command)))
+(defun gnus-mail ()
+  (interactive)
+  (let ((inbox-line -2)
+        (mails-to-show 30))
+    (progn
+      (gnus)
+      (forward-line inbox-line)
+      (gnus-group-read-group mails-to-show t)
+      (forward-line (- mails-to-show 2)))))
+
+;; There is a better way to do this. Set ssh-askpass-gnome
+;; (defun sudo-shell-command (command) 
+;;   (interactive "scommand:")
+;;   (shell-command (concat "echo " (read-passwd "Password: ") " | sudo -S " command)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Commenting code from http://www.tenfoot.org.uk/emacs/snippets.html
@@ -146,12 +160,6 @@
 	(kill-buffer)))
 
 
-(defun show-in-explorer ()
-  "Show the parent directory of the current buffer in windows explorer"
-  (interactive)
-  (shell-command (concat "explorer.exe " (replace-regexp-in-string "/" "\\\\" (replace-regexp-in-string (buffer-name) "" (buffer-file-name))))))
-
-	   
 ;; (replace-regexp-in-string ";" "" (replace-regexp-in-string "\\." "/" (cadr (split-string "import a.b.c;"))))
 (defun switch-to-h-file ()
   "switch to corresponding .h/.cpp file"
@@ -204,8 +212,6 @@
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil))
 
- 
-
 (defun decamelify-char (c)
   (if (char-capitalp c)
 	  (concat "_" (char-to-string c))
@@ -238,7 +244,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Xahs documentation ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
-(setq xah-doc-location "C:/Docume~1/QA_Testing/Desktop/xah_emacs_tutorial/")
+
 
 (defun xah-grep (xah-search)
   "Search for a key word in xah's documentation"
@@ -275,10 +281,26 @@
 	(pop-to-buffer out-buf)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; TODO: Implement clean function to delete all ~ and # files in the current dir ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun clean ())
+(defun clean-emacs-temps ()
+  (interactive)
+  (let* ((bufs (list-buffers-noselect))
+         (files (mapcar buffer-file-name bufs)))
+    (mapcar (lambda(filename) 
+              (let (possibles (list (concat filename "~")
+                                    (concat filename "#")
+                                    (concat "#" filename "#")))
+                (mapcar (lambda (possible)
+                          (if (file-exists-p possible)
+                              (progn
+                                ;; (format t (concat "Deleting file " possible))
+                                (delete-file possible))))
+                        possibles)))
+         files)))
+                 
+
+(buffer-file-name (caddr (buffer-list)))
+(mapcar buffer-file-name (buffer-list))
+(clean-emacs-temps)
 
 
 ;;;;;;;;;;;;;;
@@ -330,22 +352,6 @@
                "(public|private|protected).*\(.*\)$" 
                file))))
 
-  
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Search and open if you only have only file, else show the output in buffer ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun search-index-internal (file str)
-    (run-cmd  'grep-mode 
-              "searcher" 
-              "*index-searcher*" 
-              "/ext/home/ravi/git_project/scripts/search.sh" 
-              "/ext/home/ravi/git_project/fileList" 
-              file str))
-
-(defun search-index(file str)
-  (interactive "sFile Pattern:\nsString Pattern:")
-  (search-index-internal file str))
-
 (defun word-at-point ()
   ;; (interactive)
   (with-current-buffer
@@ -363,46 +369,6 @@
       (message (format "The word is %s" word))
       (search-index-internal "*.java$" word))))
 
-(defun src-update ()
-  (interactive)
-  (progn
-    (run-cmd 'grep-mode 
-             "Update git_project" 
-             "*update-git-project*" 
-             "/ext/home/ravi/git_project/scripts/update.sh")))
-
-(defun ll-build (target)
-  (interactive 
-   (list (read-string "Target:")))
-  (run-cmd  'compilation-mode
-            "Build Sparkletabs" 
-            "*build-sparkletabs*" 
-            "/ext/home/ravi/git_project/scripts/llbuild.sh" 
-            "-p"
-            target))
-
-(defun ll-git-log (target &optional limit)
-  (interactive "sProject:\nsLimit-To:")
-  (run-cmd 'git-log-view-mode
-           "Git-Log" 
-           "*git-log*"  
-           "git"  
-           "log" 
-           "-l30"))
-
-;;;;;;;;;;;;;;;;;;;;;;;
-;; svn map functions ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-(defun svn-cmd (arg)
-  (run-cmd (concat "svn-map-" arg) (concat "*svn-" arg "*") "/ext/home/ravi/project/svn_map.sh" arg))
-
-(defun svn-map-update ()
-  (interactive) 
-  (svn-cmd "update"))
-
-(defun svn-map-status ()
-  (interactive)
-  (svn-cmd "status1"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile and install ;;
