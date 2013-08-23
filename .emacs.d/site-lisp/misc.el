@@ -241,6 +241,7 @@
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Xahs documentation ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -281,26 +282,27 @@
 	(pop-to-buffer out-buf)))
 
 
-(defun clean-emacs-temps ()
-  (interactive)
-  (let* ((bufs (list-buffers-noselect))
-         (files (mapcar buffer-file-name bufs)))
-    (mapcar (lambda(filename) 
-              (let (possibles (list (concat filename "~")
-                                    (concat filename "#")
-                                    (concat "#" filename "#")))
-                (mapcar (lambda (possible)
-                          (if (file-exists-p possible)
-                              (progn
-                                ;; (format t (concat "Deleting file " possible))
-                                (delete-file possible))))
-                        possibles)))
-         files)))
+;; TODO: Fix this.. breaks shit
+;; (defun clean-emacs-temps ()
+;;   (interactive)
+;;   (let* ((bufs (list-buffers-noselect))
+;;          (files (mapcar buffer-file-name bufs)))
+;;     (mapcar (lambda(filename) 
+;;               (let (possibles (list (concat filename "~")
+;;                                     (concat filename "#")
+;;                                     (concat "#" filename "#")))
+;;                 (mapcar (lambda (possible)
+;;                           (if (file-exists-p possible)
+;;                               (progn
+;;                                 ;; (format t (concat "Deleting file " possible))
+;;                                 (delete-file possible))))
+;;                         possibles)))
+;;          files)))
                  
 
-(buffer-file-name (caddr (buffer-list)))
-(mapcar buffer-file-name (buffer-list))
-(clean-emacs-temps)
+;; (buffer-file-name (caddr (buffer-list)))
+;; (mapcar buffer-file-name (buffer-list))
+;; (clean-emacs-temps)
 
 
 ;;;;;;;;;;;;;;
@@ -508,6 +510,26 @@
             (progn
               (setq other-w (get-other-window))
               (set-window-buffer other-w other-b)))))))
+
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+
+(defun open-local-file (filename &optional refresh)
+  (switch-to-buffer (find-file-noselect filename))
+  (if refresh 
+      (forward-line -1)
+      (auto-revert-tail-mode)))
+
+(defun open-org ()
+  (interactive)
+  (open-local-file "~/ll/others/notes/locationlabs.org"))
 
 ;(defun switch-window transpose-window-orientation)
 
