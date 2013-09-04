@@ -6,10 +6,11 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar prelude-packages
+(defvar elpa-packages
   '(anything
     anything-complete
     anything-match-plugin
+    apt-utils
     autopair
     auto-complete
     auto-indent-mode
@@ -30,7 +31,7 @@
     zencoding-mode)
   "A list of packages to ensure are installed at launch.")
 
-(dolist (p prelude-packages)
+(dolist (p elpa-packages)
   (when (not (package-installed-p p))
     (package-install p)))
 
@@ -41,6 +42,7 @@
                     "emacs-tiny-tools/lisp/other"
                     "emacs-tiny-tools/lisp/tiny"
                     "git-emacs"
+                    "mode-line-stats"
                     "site-lisp"
                     "wl-2.14.0"
                     )))
@@ -49,7 +51,8 @@
 (defun init-load-pkgs ()
   "Activate the installed packages here"
   (let ((local-pkgs (list
-                     ;;                     'auto-complete
+                     'autopair
+                     'auto-complete-config
                      'blank-mode
                      'bm
                      'context
@@ -63,6 +66,7 @@
                      'jabber-autoloads
                      'javadoc-help
                      'language-styles
+                     'mode-line-stats
                      'moinmoin-mode
                      'misc
                      'js2-mode
@@ -79,6 +83,7 @@
                      )))
     (mapcar 'require local-pkgs)))
 
+
 (defun init-set-modes ()
   "The state emacs should be in when it starts up, with all
  the minor minor modes and window decorations set here"
@@ -88,15 +93,18 @@
     (fringe-mode)
     (global-hi-lock-mode 1)
     (global-linum-mode t)
-    ;;    (global-autocomplete-mode t)
-    ;; (menu-bar-mode -1)
     (scroll-bar-mode -1)
+    (semantic-mode 1)
     (setq scroll-step 1)
     (show-paren-mode t)
     (size-indication-mode t)
     (tool-bar-mode -1)
     (which-function-mode t)
-    (semantic-mode 1)))
+;;    (mode-line-stats-mode)
+    (autopair-mode)
+    ;; (global-autocomplete-mode t)
+    ;; (menu-bar-mode -1)
+))
 
 (defun init-set-key-mappings ()
   "All the key mappings go here"
@@ -121,7 +129,7 @@
                    '("\C-cg"     google-it)
                    '("\C-ch"     hide-lines)
                    '("\C-ci"     transpose-window-orientation)
-                   '("\C-cj"     cua-mode)
+                   '("\C-cj"     join-line)
                    '("\C-ck"     tags-apropos)
                    '("\C-cl"     open-finder-sprint-log)
                    '("\C-cn"     auto-revert-tail-mode)
@@ -134,9 +142,13 @@
                    '("\C-cv"     indent-buffer)
                    '("\C-cy"     duplicate-line)
                    '("\C-cz"     close-all-buffers)
+                   '("\C-c."     add-to-imports)
+                   '("\M-["      beginning-of-defun)
+                   '("\M-]"       end-of-defun)
                    '([f1]        search-forward-regexp)
                    '([f2]        search-backward-regexp)
-                   '([f3]        xah-emacs-help))))
+                   '([f3]        xah-emacs-help)
+                   '([f5]        search-index))))
     (mapcar (lambda (mapping)
               (let ((key (car mapping))
                     (func (cadr mapping)))
@@ -152,7 +164,8 @@
     (setq-default indent-tabs-mode nil)
     (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
     (setq rcirc-server-alist  '(("bugz" :channels  ("#engr"))))
-    (setq scroll-down-aggressively t)))
+    (setq scroll-down-aggressively t)
+    (ac-config-default)))
 
 ;; (defun init-yasnippet ()
 ;;   "Initialize yasnippet"
@@ -168,13 +181,17 @@
     (add-to-list 'auto-mode-alist '("\\.nsi$" . nsi-mode))
     (add-to-list 'auto-mode-alist '("\\.nsh$" . nsi-mode))
     (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
     (setq inferior-lisp-program "sbcl")
-                                        ;    (slime-setup '(slime-fancy slime-asdf))
+;   (slime-setup '(slime-fancy slime-asdf))
     ))
 
 (defun init-other ()
   "All the other misc. stuff that doesn't fit any where else goes here"
-  )
+  (let ((active-transparency 98)
+        (inactive-transparency 94))
+  (set-frame-parameter (selected-frame) 'alpha (list active-transparency  inactive-transparency))))
 
 (defun init-hooks ()
   "Hooks for all the modes go here"
@@ -197,7 +214,7 @@
   "The index of all functions that get loaded during initialization"
   (progn
     (init-load-paths)
-    (init-load-pkgs)
+    (init-load-pkgs);~/.emacs.d/elpa/slime-20100404.1/slime.elc:Error: Don't know how to compile nil
     (init-set-modes)
     (init-set-key-mappings)
     (init-set-vars)
@@ -218,12 +235,12 @@
 
 (global-unset-key "\C-x\C-c")
 (global-set-key "\C-x\C-c" 'confirm-exit-emacs)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(Linum-format "%7i ")
  '(ansi-color-names-vector ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(ansi-term-color-vector [unspecified "#110F13" "#b13120" "#719f34" "#ceae3e" "#7c9fc9" "#7868b5" "#009090" "#F4EAD5"])
  '(column-number-mode t)
@@ -247,7 +264,7 @@
  '(jabber-roster-default-group-name nil)
  '(jabber-use-global-history t)
  '(jabber-vcard-avatars-retrieve nil)
- '(linum-format " %7d ")
+ '(linum-format "%d")
  '(main-line-color1 "#191919")
  '(main-line-color2 "#111111")
  '(main-line-separator-style (quote chamfer))
@@ -257,16 +274,16 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
  '(size-indication-mode t)
- '(smtpmail-smtp-server "mail.locationlabs.com")
- '(smtpmail-smtp-service 25)
+ '(smtpmail-smtp-server "webmail.locationlabs.com")
+ '(smtpmail-smtp-service 587)
  '(tool-bar-mode nil)
  '(vc-annotate-background "#2b2b2b")
  '(vc-annotate-color-map (quote ((20 . "#bc8383") (40 . "#cc9393") (60 . "#dfaf8f") (80 . "#d0bf8f") (100 . "#e0cf9f") (120 . "#f0dfaf") (140 . "#5f7f5f") (160 . "#7f9f7f") (180 . "#8fb28f") (200 . "#9fc59f") (220 . "#afd8af") (240 . "#bfebbf") (260 . "#93e0e3") (280 . "#6ca0a3") (300 . "#7cb8bb") (320 . "#8cd0d3") (340 . "#94bff3") (360 . "#dc8cc3"))))
  '(vc-annotate-very-old-color "#dc8cc3"))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 103 :width normal))))
- '(jabber-roster-user-away ((t (:foreground "dark green" :weight normal))) t))
+ '(default ((t (:family "Lekton" :foundry "unknown" :slant normal :weight normal :height 122 :width normal)))))

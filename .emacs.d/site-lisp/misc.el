@@ -103,10 +103,42 @@
 		(concat (cons (- (car ls) 32) (cdr ls)))
 	  str)))
 
-
 (defun but-first (str)
   "Strip the first letter in the string"
   (concat (cdr (string-to-list str))))
+
+
+(defun join (ls str)
+  "Python like join"
+  (mapconcat 'identity ls str))
+
+(defun get-import-from-grep-result ()
+  (defun filter-list(list result &optional seen_java)
+    (if (null list)
+        result
+      (if (not seen_java)
+          (if (or (string= (car list) "com")
+                  (string= (car list) "org"))
+              (filter-list list result t)
+            (filter-list (cdr list) result))
+        (filter-list (cdr list) (cons (car list) result) seen_java))))
+  (let* ((buf (buffer-substring (line-beginning-position) (line-end-position)))
+         (filename (car (split-string buf ":")))
+         (splits (split-string filename "/"))
+         (result (concat "import " (replace-regexp-in-string "\\.java" "" (join (reverse (filter-list splits '())) ".")) ";")))
+    (message (concat "import is "  result))
+    result))
+
+(defun add-to-imports()
+  (interactive)
+  (let ((import (get-import-from-grep-result)))
+    (pop-to-buffer (first (buffer-list)))
+    (save-excursion
+      (goto-char (point-max))
+      (search-backward-regexp "import ")
+      (line-move 1)
+      (insert import)
+      (insert "\n"))))
 
 (defun javadoc-method-comment () 
   ;; Insert a javadoc method comment at the cursor position 
@@ -126,6 +158,35 @@
   (forward-line -8) 
   (end-of-line))
 
+
+(defun prepend-to-line (s)
+  (beginning-of-line)
+  (insert s))
+
+(defun line-count (start-point end-point)
+  (save-excursion
+    (goto-char start-point)
+    (let ((start-line (line-number-at-pos)))
+      (goto-char end-point)
+      (- (line-number-at-pos) start-line))))
+          
+(defun javadoc-comment ()
+  (interactive)
+  (with-current-buffer
+      (let ((b (region-beginning))
+            (e (region-end)))
+        (if (= b e)
+            (message "%s" "Please select a region")
+          (progn
+            (goto-char b)
+            (insert "/**")
+            (line-move 1)
+            (loop 
+             for line-number from 0 to (line-count b e)
+             do 
+             (prepend-to-line "  *")
+             (line-move 1))
+            (prepend-to-line "  */\n"))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Generate getters  ;;
@@ -245,8 +306,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Xahs documentation ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 (defun xah-grep (xah-search)
   "Search for a key word in xah's documentation"
   (interactive "sxah-search:")
@@ -270,7 +329,7 @@
 (defun browse-url-linux(url &optional new-window)
   (interactive (browse-url-interactive-arg "URL:"))
   (let ((out-buf "*Messages*"))
-	(start-process "browser" out-buf "firefox" url)))
+	(start-process "browser" out-buf "google-chrome" url)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; The beautiful Conkeror browser ;;
@@ -280,7 +339,6 @@
   (let ((out-buf "*Messages*"))
 	(start-process "conkeror" out-buf "C:/apps/xulrunner/conkeror.bat" url)
 	(pop-to-buffer out-buf)))
-
 
 ;; TODO: Fix this.. breaks shit
 ;; (defun clean-emacs-temps ()
@@ -333,9 +391,8 @@
                                            name))))
       (set-buffer out-buf)
       (funcall mode)
-      (switch-to-buffer out-buf)
-      (apply 'start-process args)
-      (goto-char (point-min)))))
+      (switch-to-buffer-other-window out-buf 1) 
+      (apply 'start-process args))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,6 +411,25 @@
                "(public|private|protected).*\(.*\)$" 
                file))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Search and open if you only have only file, else show the output in buffer ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq ll-code-dir nil)
+(defun search-index-internal (file str)
+  (if (null ll-code-dir)
+      (setq ll-code-dir (read-from-minibuffer "Please set a global search dir:")))
+  (run-cmd  'grep-mode 
+	    "searcher" 
+	    "*index-searcher*" 
+	    "/home/ravi/ll/scripts/projects/search.sh" 
+	    ll-code-dir
+	    file str))
+
+(defun search-index(file str)
+  (interactive "sFile Pattern:\nsString Pattern:")
+  (search-index-internal file str))
+
 (defun word-at-point ()
   ;; (interactive)
   (with-current-buffer
@@ -371,6 +447,13 @@
       (message (format "The word is %s" word))
       (search-index-internal "*.java$" word))))
 
+(defun dos2unix (buffer)
+      "Automate M-% C-q C-m RET C-q C-j RET"
+      (interactive "*b")
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward (string ?\C-m) nil t)
+          (replace-match (string ?\C-j) nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile and install ;;

@@ -4,13 +4,20 @@
   "Maximum string length of search term.  This prevents you from accidentally
 sending a five megabyte query string to Netscape.")
 
+(defun search-it (url search-string)
+  "Search for given string on the url"
+  (browse-url (concat url "?q=" (url-hexify-string
+                       (encode-coding-string search-string 'utf-8)))))
+
+
 (defun google-it (search-string)
   "Search for SEARCH-STRING on google."
   (interactive "sGoogle for: ")
-  (browse-url (concat "http://www.duckduckgo.com/?q="
-                     (url-hexify-string
-                       (encode-coding-string search-string 'utf-8)))))
+  (search-it "https://www.google.com" search-string))
 
+(defun duck-duck-it (search-string)
+  (interactive "sDuck for:")
+  (search-it "https://duckduckgo.com" search-string))
 
 (defun google-search-selection ()
   "Create a Google search URL and send it to your web browser."
