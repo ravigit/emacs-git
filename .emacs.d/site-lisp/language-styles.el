@@ -1,6 +1,4 @@
-					;See this link for what these syntax variables mean
-					;http://www.phys.ufl.edu/docs/emacs/emacs_252.html#SEC258
-					;set c-style (proper indentation)
+;;see documentation for c-add-style
 (c-add-style "my-c-style"
 	     '((c-basic-offset  . 3)
 	       (c-comment-only-line-offset . 0)
@@ -36,8 +34,9 @@
 				    (substatement-open     . 0)
 				    (substatement-label    . +)
 				    (label                 . +)
-				    (statement-case-open   . 0)
-				    (statement-cont        . 0)
+                (statement-case-intro  . +)
+				    (statement-case-open   . +)
+				    (statement-cont        . +)
 				    (arglist-intro  . c-lineup-arglist-intro-after-paren)
 				    (arglist-close  . c-lineup-arglist)
 				    (access-label   . 0)
@@ -45,7 +44,8 @@
 				    (func-decl-cont . c-lineup-java-throws)))))
 
 (setq c-default-style
-      '((java-mode . "my-java-style") (other . "my-c-style")))
+      '((java-mode . "my-java-style") 
+        (other . "my-c-style")))
 
 
 (setq c-mode-hook
@@ -58,6 +58,7 @@
 (add-hook 'java-mode-hook
           (lambda ()
             "Treat Java 1.5 @-style annotations as comments."
+            (setq c-set-style "my-java-style")
             (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
             (modify-syntax-entry ?@ "< b" java-mode-syntax-table)))
 

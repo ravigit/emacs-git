@@ -1,0 +1,5 @@
+(setq desktop-dirname "/Users/ravi")
+
+(let ((active-transparency 96)
+        (inactive-transparency 94))
+  (set-frame-parameter (selected-frame) 'alpha (list active-transparency  inactive-transparency)))

@@ -179,12 +179,12 @@
             (message "%s" "Please select a region")
           (progn
             (goto-char b)
-            (insert "/**")
+            (insert "/** ")
             (line-move 1)
             (loop 
-             for line-number from 0 to (line-count b e)
+             for line-number from 0 to (- (line-count b e) 1)
              do 
-             (prepend-to-line "  *")
+             (prepend-to-line "  * ")
              (line-move 1))
             (prepend-to-line "  */\n"))))))
 
@@ -422,7 +422,7 @@
   (run-cmd  'grep-mode 
 	    "searcher" 
 	    "*index-searcher*" 
-	    "/home/ravi/ll/scripts/projects/search.sh" 
+	    "/Users/ravi/ll/scripts/projects/search.sh" 
 	    ll-code-dir
 	    file str))
 
