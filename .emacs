@@ -17,6 +17,7 @@
     col-highlight
     clojure-mode
     flymake-shell
+    groovy-mode
     jabber
     javadoc-help
     js2-mode
@@ -24,7 +25,8 @@
     moinmoin-mode
     paredit
     pastebin
-    slime slime-repl
+    pastels-on-dark-theme
+    ;slime slime-repl
     org org-blog org-magit org-mime org-table-comment org2blog
     yasnippet
     yasnippet-bundle
@@ -58,7 +60,7 @@
                      'context
                      'emacs-os
                      'folding
-                     'git-emacs
+                                        ;'git-emacs
                      'google
                      'grep-buffers
                      'hide-lines
@@ -66,7 +68,7 @@
                      'jabber-autoloads
                      'javadoc-help
                      'language-styles
-                     'mode-line-stats
+                                        ;'mode-line-stats
                      'moinmoin-mode
                      'misc
                      'js2-mode
@@ -75,7 +77,7 @@
                      'psvn
                      'revbufs
                      'show-functions
-                     'slime
+                     ;'slime
                                         ;                     'xcscope
                      'xub-mode
                      'xub-mode
@@ -100,11 +102,11 @@
     (size-indication-mode t)
     (tool-bar-mode -1)
     (which-function-mode t)
-;;    (mode-line-stats-mode)
+    ;;    (mode-line-stats-mode)
     (autopair-mode)
     ;; (global-autocomplete-mode t)
     ;; (menu-bar-mode -1)
-))
+    ))
 
 (defun init-set-key-mappings ()
   "All the key mappings go here"
@@ -135,7 +137,7 @@
                    '("\C-cn"     auto-revert-tail-mode)
                    '("\C-co"     eval-buffer)
                    '("\C-cp"     goto-line)
-                   '("\C-cq"     replace-string)
+                   '("\C-cq"     query-replace)
                    '("\C-crf"    recursive-grep)
                    '("\C-cs"     cscope-find-global-definition)
                    '("\C-cu"     my-browse-url)
@@ -148,7 +150,9 @@
                    '([f1]        search-forward-regexp)
                    '([f2]        search-backward-regexp)
                    '([f3]        xah-emacs-help)
-                   '([f5]        search-index))))
+                   '([f5]        search-index)
+                   '("\C-c;"        search-index)
+                   )))
     (mapcar (lambda (mapping)
               (let ((key (car mapping))
                     (func (cadr mapping)))
@@ -165,7 +169,8 @@
     (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
     (setq rcirc-server-alist  '(("bugz" :channels  ("#engr"))))
     (setq scroll-down-aggressively t)
-    (ac-config-default)))
+    (ac-config-default)
+    (setq ring-bell-function #'ignore)))
 
 ;; (defun init-yasnippet ()
 ;;   "Initialize yasnippet"
@@ -173,7 +178,7 @@
 ;;     (yas/initialize)
 ;;     (yas/load-directory "~/.emacs.d/yasnippet/snippets")))
 
-(defun init-mode-bindings-to-filetypes () 
+(defun init-mode-bindings-to-filetypes ()
   (progn
     ;; (init-yasnippet)
     (add-to-list 'auto-mode-alist '("\\.js$" .  js2-mode))
@@ -183,21 +188,22 @@
     (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
     (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
     (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
-    (setq inferior-lisp-program "sbcl")
-;   (slime-setup '(slime-fancy slime-asdf))
+    ;(setq inferior-lisp-program "sbcl")
+                                        ;   (slime-setup '(slime-fancy slime-asdf))
     ))
 
 (defun init-other ()
   "All the other misc. stuff that doesn't fit any where else goes here"
   (let ((active-transparency 98)
         (inactive-transparency 94))
-  (set-frame-parameter (selected-frame) 'alpha (list active-transparency  inactive-transparency))))
+    (set-frame-parameter (selected-frame) 'alpha (list active-transparency  inactive-transparency))))
 
 (defun init-hooks ()
   "Hooks for all the modes go here"
   (add-hook 'dired-load-hook (lambda () (load "dired-x")))
-  (add-hook 'lisp-mode-hook  (lambda () (slime-mode t)))
-  (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t))))
+  ;(add-hook 'lisp-mode-hook  (lambda () (slime-mode t)))
+  ;(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+)
 
 (defun init-server ()
   "Just a wrapper function for emacs server"
@@ -209,6 +215,11 @@
   ;; (require 'emacs-local)
   )
 
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
 
 (defun init-all ()
   "The index of all functions that get loaded during initialization"
@@ -226,7 +237,7 @@
 
 (init-all)
 
-; Don't exit without confirmation
+                                        ; Don't exit without confirmation
 (defun confirm-exit-emacs ()
   "ask for confirmation before exiting emacs"
   (interactive)
@@ -244,8 +255,8 @@
  '(ansi-color-names-vector ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(ansi-term-color-vector [unspecified "#110F13" "#b13120" "#719f34" "#ceae3e" "#7c9fc9" "#7868b5" "#009090" "#F4EAD5"])
  '(column-number-mode t)
- '(custom-enabled-themes (quote (pastels-on-dark)))
- '(custom-safe-themes (quote ("1177fe4645eb8db34ee151ce45518e47cc4595c3e72c55dc07df03ab353ad132" "1dc3a2e894d5ee9e90035e4ff90d57507857c07e9a394f182a961e935b3b5497" "fe6330ecf168de137bb5eddbf9faae1ec123787b5489c14fa5fa627de1d9f82b" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "89f613708c8018d71d97e3da7a1e23c8963b798252f1ac2ab813ad63b7a4b341" "5bff694d9bd3791807c205d8adf96817ee1e572654f6ddc5e1e58b0488369f9d" "787574e2eb71953390ed2fb65c3831849a195fd32dfdd94b8b623c04c7f753f0" "d921083fbcd13748dd1eb638f66563d564762606f6ea4389ea9328b6f92723b7" "085b401decc10018d8ed2572f65c5ba96864486062c0a2391372223294f89460" "936e5cac238333f251a8d76a2ed96c8191b1e755782c99ea1d7b8c215e66d11e" "30fe7e72186c728bd7c3e1b8d67bc10b846119c45a0f35c972ed427c45bacc19" "4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "68769179097d800e415631967544f8b2001dae07972939446e21438b1010748c" "923faef2c7ed017e63f517703c846c6190c31400261e8abdb1be06d5b46ea19a" "617219c11282b84761477059b9339da78ce392c974d9308535ee4ec8c0770bee" "246a51f19b632c27d7071877ea99805d4f8131b0ff7acb8a607d4fd1c101e163" "5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "e065de66980983399a7367f8eec3b32e88c932d77b9b34e9f4a380582855b504" default)))
+ '(custom-enabled-themes (quote (dichromacy)))
+ '(custom-safe-themes (quote ("e83c94a6bfab82536cef63610ec58d08dfddd27752d860763055daf58d028aad" "e890fd7b5137356ef5b88be1350acf94af90d9d6dd5c234978cd59a6b873ea94" "1177fe4645eb8db34ee151ce45518e47cc4595c3e72c55dc07df03ab353ad132" "1dc3a2e894d5ee9e90035e4ff90d57507857c07e9a394f182a961e935b3b5497" "fe6330ecf168de137bb5eddbf9faae1ec123787b5489c14fa5fa627de1d9f82b" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "89f613708c8018d71d97e3da7a1e23c8963b798252f1ac2ab813ad63b7a4b341" "5bff694d9bd3791807c205d8adf96817ee1e572654f6ddc5e1e58b0488369f9d" "787574e2eb71953390ed2fb65c3831849a195fd32dfdd94b8b623c04c7f753f0" "d921083fbcd13748dd1eb638f66563d564762606f6ea4389ea9328b6f92723b7" "085b401decc10018d8ed2572f65c5ba96864486062c0a2391372223294f89460" "936e5cac238333f251a8d76a2ed96c8191b1e755782c99ea1d7b8c215e66d11e" "30fe7e72186c728bd7c3e1b8d67bc10b846119c45a0f35c972ed427c45bacc19" "4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "68769179097d800e415631967544f8b2001dae07972939446e21438b1010748c" "923faef2c7ed017e63f517703c846c6190c31400261e8abdb1be06d5b46ea19a" "617219c11282b84761477059b9339da78ce392c974d9308535ee4ec8c0770bee" "246a51f19b632c27d7071877ea99805d4f8131b0ff7acb8a607d4fd1c101e163" "5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "e065de66980983399a7367f8eec3b32e88c932d77b9b34e9f4a380582855b504" default)))
  '(ecb-options-version "2.32")
  '(fci-rule-character-color "#202020")
  '(fci-rule-color "#202020")
@@ -280,10 +291,9 @@
  '(vc-annotate-background "#2b2b2b")
  '(vc-annotate-color-map (quote ((20 . "#bc8383") (40 . "#cc9393") (60 . "#dfaf8f") (80 . "#d0bf8f") (100 . "#e0cf9f") (120 . "#f0dfaf") (140 . "#5f7f5f") (160 . "#7f9f7f") (180 . "#8fb28f") (200 . "#9fc59f") (220 . "#afd8af") (240 . "#bfebbf") (260 . "#93e0e3") (280 . "#6ca0a3") (300 . "#7cb8bb") (320 . "#8cd0d3") (340 . "#94bff3") (360 . "#dc8cc3"))))
  '(vc-annotate-very-old-color "#dc8cc3"))
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Lekton" :foundry "unknown" :slant normal :weight normal :height 122 :width normal)))))
+ )

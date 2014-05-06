@@ -422,7 +422,7 @@
   (run-cmd  'grep-mode 
 	    "searcher" 
 	    "*index-searcher*" 
-	    "/Users/ravi/ll/scripts/projects/search.sh" 
+	    "/Users/ravi/ll/bin/search.sh" 
 	    ll-code-dir
 	    file str))
 
