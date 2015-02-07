@@ -1,3 +1,8 @@
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package management ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'package)
 
 (add-to-list 'package-archives
@@ -9,239 +14,181 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar elpa-packages
-  '(anything
-    anything-complete
-    anything-match-plugin
-    apt-utils
-    auto-complete
-    auto-indent-mode
-    autopair
-    clojure-mode
-    col-highlight
-    flymake-easy
-    flymake-shell
-    groovy-mode
-    js2-mode
-    magit
-    markdown-mode
-    minimap
-    mo-git-blame
-    moinmoin-mode
-    org
-    org-blog
-    org-magit
-    org-mime
-    org-table-comment
-    org2blog
-    paredit
-    pastebin
-    popup
-    save-packages
-    screen-lines
-    transpose-frame
-    vline
-    w3
-    xml-rpc
-    zencoding-mode))
+(when (not (package-installed-p 'save-packages))
+  (package-install save-packages))
 
-(defvar elpa-theme-packages
-  '(ample-zen-theme
-    clues-theme
-    github-theme
-    ujelly-theme ; kicks ass
-    pastels-on-dark-theme))
-
-(defun check-packages-installed ()
-  (dolist (p (append elpa-packages elpa-theme-packages))
-    (when (not (package-installed-p p))
-      (package-install p))))
-
-(defun init-all ()
-  "The index of all functions that get loaded during initialization"
-  (progn
-    (check-packages-installed)
-    (init-load-paths)
-    (init-load-pkgs)
-    (init-set-modes)
-    (init-set-key-mappings)
-    (init-set-vars)
-    (init-hooks)
-    (init-mode-bindings-to-filetypes)
-    (init-other)
-    (init-server)
-    (init-local)))
-
-(defun init-load-paths ()
-  "All the load paths for newly installed packages should go here."
-  (progn
-    (add-to-list 'exec-path "/usr/local/bin")
-    (let ((load-dirs '("site-lisp")))
-      (mapcar (lambda(dir)
-                (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))))
-
-(defun init-load-pkgs ()
-  "Activate the installed packages here"
-  (let ((local-pkgs (list
-                     'auto-complete-config
-                     'autopair
-                     'blank-mode
-                     'bm
-                     'butler
-                     'context
-                     'emacs-os
-                     'google
-                     'grep-buffers
-                     'hide-lines
-                     'js2-mode
-                     'language-styles
-                     'misc
-                     'moinmoin-mode
-                     'nexus
-                     'nsi-mode
-                     'org-install
-                     'psvn
-                     'revbufs
-                     'save-packages
-                     'show-functions
-                     'xub-mode
-                     'xub-mode
-                     'transpose-frame
-                     )))
-    (mapcar 'require local-pkgs)))
+(install-saved-packages)
 
 
-(defun init-set-modes ()
-  "The state emacs should be in when it starts up, with all
- the minor minor modes and window decorations set here"
-  (progn
-    (autopair-mode)
-    (column-number-mode t)
-    (desktop-save-mode 1)
-    (fringe-mode)
-    (global-hi-lock-mode 1)
-    (global-linum-mode t)
-    (scroll-bar-mode -1)
-    (semantic-mode 1)
-    (setq scroll-step 1)
-    (show-paren-mode t)
-    (size-indication-mode t)
-    (tool-bar-mode -1)
-    (which-function-mode t)
-    ))
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set and LoadPaths  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (global-set-key (kbd "s-<right>") 'move-end-of-line)
-(defun init-set-key-mappings ()
-  "All the key mappings go here"
-  (let ((mappings (list
-                   '("\C-\\"     uncomment-line-or-region)
-                   '("\C-c'"     gnus)
-                   '("\C-c."     add-to-imports)
-                   '("\C-c/"     comment-line-or-region)
-                   '("\C-c0"     bm-show-all)
-                   '("\C-c1"     bm-toggle)
-                   '("\C-c2"     bm-next)
-                   '("\C-c3"     bm-previous)
-                   '("\C-c;"     search-index)
-                   '("\C-c?"     open-org)
-                   '("\C-c\C-b"  search-forward-regexp)
-                   '("\C-c\C-t"  restart-tomcat)
-                   '("\C-ca"     open-fileline)
-                   '("\C-cb"     grep-buffers)
-                   '("\C-cc"     compile)
-                   '("\C-cd"     vc-diff)
-                   '("\C-ce"     blank-mode)
-                   '("\C-cf"     grep)
-                   '("\C-cg"     google-it)
-                   '("\C-ch"     hide-lines)
-                   '("\C-ci"     transpose-frame)
-                   '("\C-cj"     join-line)
-                   '("\C-ck"     tags-apropos)
-                   '("\C-cl"     cider-connect) ; clojure uses cider
-                   '("\C-cn"     auto-revert-tail-mode)
-                   '("\C-co"     eval-buffer)
-                   '("\C-cp"     goto-line)
-                   '("\C-cq"     query-replace)
-                   '("\C-crf"    recursive-grep)
-                   '("\C-cs"     cscope-find-global-definition)
-                   '("\C-cu"     my-browse-url)
-                   '("\C-cv"     indent-buffer)
-                   '("\C-cy"     duplicate-line)
-                   '("\C-cx"     replace-string)
-                   '("\C-cz"     close-all-buffers)
-                   '("\M-["      beginning-of-defun)
-                   '("\M-]"      end-of-defun)
-                   '([f1]        search-forward-regexp)
-                   '([f2]        search-backward-regexp)
-                   '([f3]        xah-emacs-help)
-                   '([f5]        search-index)
+(add-to-list 'exec-path "/usr/local/bin")
+(let ((load-dirs '("site-lisp")))
+  (mapcar (lambda(dir)
+            (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))
+
+
+;;;;;;;;;;;;;;;;;;;
+;; Load Packages ;;
+;;;;;;;;;;;;;;;;;;;
+
+(let ((local-pkgs (list
+                   'auto-complete-config
+                   'autopair
+                   'blank-mode
+                   'bm
+                   'butler
+                   'context
+                   'emacs-os
+                   'google
+                   'grep-buffers
+                   'hide-lines
+                   'js2-mode
+                   'language-styles
+                   'misc
+                   'moinmoin-mode
+                   'nexus
+                   'nsi-mode
+                   'org-install
+                   'psvn
+                   'revbufs
+                   'save-packages
+                   'show-functions
+                   'xub-mode
+                   'xub-mode
+                   'transpose-frame
                    )))
-    (mapcar (lambda (mapping)
-              (let ((key (car mapping))
-                    (func (cadr mapping)))
-                (progn
-                  (message (format "map key %s to %s" key func))
-                  (global-set-key key func))))
-            mappings)))
-
-(defun init-set-vars ()
-  "Default variables that control the behavior of emacs"
-  (progn
-    (ac-config-default)
-    (setq python-indent-offset 3)
-    (setq rcirc-server-alist  '(("bugz" :channels  ("#engr"))))
-    (setq ring-bell-function #'ignore)
-    (setq scroll-down-aggressively 0.0)
-    (setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
-    (setq-default indent-tabs-mode nil)
-    (setq-default tab-width 3)))
-
-
-(defun init-mode-bindings-to-filetypes ()
-  (progn
-    (add-to-list 'auto-mode-alist '("\\.gradle$" .     groovy-mode))
-    (add-to-list 'auto-mode-alist '("\\.js$" .         js2-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsp$" .        java-mode))
-    (add-to-list 'auto-mode-alist '("\\.markdown$" .   markdown-mode))
-    (add-to-list 'auto-mode-alist '("\\.md$" .         markdown-mode))
-    (add-to-list 'auto-mode-alist '("\\.nsh$" .        nsi-mode))
-    (add-to-list 'auto-mode-alist '("\\.nsi$" .        nsi-mode))
-    ))
-
-(defun init-other ()
-  "All the other misc. stuff that doesn't fit any where else goes here"
-  (let ((active-transparency 98)
-        (inactive-transparency 98))
-    (set-frame-parameter
-     (selected-frame)
-     'alpha
-     (list active-transparency  inactive-transparency))))
-
-(defun init-hooks ()
-  "Hooks for all the modes go here"
-  (add-hook 'dired-load-hook (lambda () (load "dired-x"))))
-
-(defun init-server ()
-  "Just a wrapper function for emacs server"
-  (server-start))
-
-(defun init-local ()
-  "A wrapper function that loads the local customizations, those that belong to
-  a machine."
-  ;; (require 'emacs-local)
-  )
-
-(defun remove-dos-eol ()
-  "Do not show ^M in files containing mixed UNIX and DOS line endings."
-  (interactive)
-  (setq buffer-display-table (make-display-table))
-  (aset buffer-display-table ?\^M []))
+  (mapcar 'require local-pkgs))
 
 
 
-(init-all)
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set mode parameters ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(autopair-mode)
+(column-number-mode t)
+(desktop-save-mode 1)
+(fringe-mode)
+(global-hi-lock-mode 1)
+(global-linum-mode t)
+(scroll-bar-mode -1)
+(semantic-mode 1)
+(setq scroll-step 1)
+(show-paren-mode t)
+(size-indication-mode t)
+(tool-bar-mode -1)
+(which-function-mode t)
 
-                                        ; Don't exit without confirmation
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set variables that control emacs behavior ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(ac-config-default)
+(setq python-indent-offset 3)
+(setq rcirc-server-alist  '(("bugz" :channels  ("#engr"))))
+(setq ring-bell-function #'ignore)
+(setq scroll-down-aggressively 0.0)
+(setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 3)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Add mode bindings to file types ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.gradle$" .     groovy-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" .         js2-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp$" .        java-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" .   markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" .         markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.nsh$" .        nsi-mode))
+(add-to-list 'auto-mode-alist '("\\.nsi$" .        nsi-mode))
+
+
+
+;;;;;;;;;;;;;;;
+;; Add hooks ;;
+;;;;;;;;;;;;;;;
+(add-hook 'dired-load-hook (lambda () (load "dired-x")))
+
+
+
+;;;;;;;;;;;;;;;
+;; Key maps  ;;
+;;;;;;;;;;;;;;;
+(let ((mappings (list
+                 '("\C-\\"     uncomment-line-or-region)
+                 '("\C-c'"     gnus)
+                 '("\C-c."     add-to-imports)
+                 '("\C-c/"     comment-line-or-region)
+                 '("\C-c0"     bm-show-all)
+                 '("\C-c1"     bm-toggle)
+                 '("\C-c2"     bm-next)
+                 '("\C-c3"     bm-previous)
+                 '("\C-c;"     search-index)
+                 '("\C-c?"     open-org)
+                 '("\C-c\C-b"  search-forward-regexp)
+                 '("\C-c\C-t"  restart-tomcat)
+                 '("\C-ca"     open-fileline)
+                 '("\C-cb"     grep-buffers)
+                 '("\C-cc"     compile)
+                 '("\C-cd"     vc-diff)
+                 '("\C-ce"     blank-mode)
+                 '("\C-cf"     grep)
+                 '("\C-cg"     google-it)
+                 '("\C-ch"     hide-lines)
+                 '("\C-ci"     transpose-frame)
+                 '("\C-cj"     join-line)
+                 '("\C-ck"     tags-apropos)
+                 '("\C-cl"     cider-connect) ; clojure uses cider
+                 '("\C-cn"     auto-revert-tail-mode)
+                 '("\C-co"     eval-buffer)
+                 '("\C-cp"     goto-line)
+                 '("\C-cq"     query-replace)
+                 '("\C-crf"    recursive-grep)
+                 '("\C-cs"     cscope-find-global-definition)
+                 '("\C-cu"     my-browse-url)
+                 '("\C-cv"     indent-buffer)
+                 '("\C-cy"     duplicate-line)
+                 '("\C-cx"     replace-string)
+                 '("\C-cz"     close-all-buffers)
+                 '("\M-["      beginning-of-defun)
+                 '("\M-]"      end-of-defun)
+                 '([f1]        search-forward-regexp)
+                 '([f2]        search-backward-regexp)
+                 '([f3]        xah-emacs-help)
+                 '([f5]        search-index)
+                 )))
+  (mapcar (lambda (mapping)
+            (let ((key (car mapping))
+                  (func (cadr mapping)))
+              (progn
+                (message (format "map key %s to %s" key func))
+                (global-set-key key func))))
+          mappings))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; Add transparency ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(let ((active-transparency 98)
+      (inactive-transparency 98))
+  (set-frame-parameter
+   (selected-frame)
+   'alpha
+   (list active-transparency  inactive-transparency)))
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Misc functions  ;;
+;;;;;;;;;;;;;;;;;;;;;
 (defun confirm-exit-emacs ()
   "ask for confirmation before exiting emacs"
   (interactive)
@@ -251,11 +198,21 @@
 (global-unset-key "\C-x\C-c")
 (global-set-key "\C-x\C-c" 'confirm-exit-emacs)
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Misc configuration ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'butler-server-list
              '(jenkins "jenkins1"
                        (server-address . "https://jenkins1")
                        (auth-file . "~/.authinfo.gpg")))
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs managed variables ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
