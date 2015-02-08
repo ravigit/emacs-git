@@ -16,6 +16,9 @@
 (when (not (package-installed-p 'save-packages))
   (package-install 'save-packages))
 
+; Restore all the saved packages from the index.
+; The following poses an interactive question, wether or not
+; to install a package. To say yes for all, choose the option '!'
 (install-saved-packages)
 
 
