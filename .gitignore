@@ -1,1 +1,8 @@
 *elpa/
+.emacs.d/semanticdb/
+.emacs.d/xkcd/
+.emacs.d/url/
+.emacs.d/.emacs.desktop
+.emacs.d/.emacs.desktop.lock
+.emacs.d/tramp
+*#

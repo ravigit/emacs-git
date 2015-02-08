@@ -8,14 +8,13 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/") t)
-(package-initialize)
+             '("melpa" . "http://melpa.org/packages/") t)
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
+(package-initialize)
+(package-refresh-contents)
 
 (when (not (package-installed-p 'save-packages))
-  (package-install save-packages))
+  (package-install 'save-packages))
 
 (install-saved-packages)
 
@@ -29,7 +28,6 @@
   (mapcar (lambda(dir)
             (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))
 
-
 ;;;;;;;;;;;;;;;;;;;
 ;; Load Packages ;;
 ;;;;;;;;;;;;;;;;;;;
@@ -37,10 +35,7 @@
 (let ((local-pkgs (list
                    'auto-complete-config
                    'autopair
-                   'blank-mode
-                   'bm
                    'butler
-                   'context
                    'emacs-os
                    'google
                    'grep-buffers
@@ -61,7 +56,6 @@
                    'transpose-frame
                    )))
   (mapcar 'require local-pkgs))
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
