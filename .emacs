@@ -31,9 +31,12 @@
   (mapcar (lambda(dir)
             (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))
 
-;;;;;;;;;;;;;;;;;;;
-;; Load Packages ;;
-;;;;;;;;;;;;;;;;;;;
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Load Required Packages ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;x
 
 (let ((local-pkgs (list
                    'auto-complete-config
@@ -169,10 +172,17 @@
           mappings))
 
 
+(global-set-key (kbd "s-n") '4clojure-next-question)
+(global-set-key (kbd "s-p") '4clojure-previous-question)
+(global-set-key (kbd "s-c") '4clojure-check-answers)
+(global-set-key (kbd "s-?") 'clojure-cheatsheet)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Add transparency ;;
 ;;;;;;;;;;;;;;;;;;;;;;
+
 (let ((active-transparency 98)
       (inactive-transparency 98))
   (set-frame-parameter
@@ -182,10 +192,19 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Inherit shell environment on OS X ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(when (memq window-system '(mac ns))
+      (exec-path-from-shell-initialize))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Misc functions  ;;
 ;;;;;;;;;;;;;;;;;;;;;
+
 (defun confirm-exit-emacs ()
   "ask for confirmation before exiting emacs"
   (interactive)
@@ -200,6 +219,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Misc configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
+
 (add-to-list 'butler-server-list
              '(jenkins "jenkins1"
                        (server-address . "https://jenkins1")
@@ -210,6 +230,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs managed variables ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
