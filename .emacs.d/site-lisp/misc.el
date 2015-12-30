@@ -553,8 +553,12 @@
   (yank)
   (open-line 1)
   (next-line 1)
-  (yank)
-)
+  (yank))
+
+(defun sub-str(str from to)
+  (if (> (- to from) (length str))
+      str
+    (substring str from to)))
 
 (defun open-local-file (filename &optional refresh)
   (switch-to-buffer (find-file-noselect filename))
