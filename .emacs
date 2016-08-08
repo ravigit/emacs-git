@@ -1,3 +1,7 @@
+
+;; Set the following to true (t) when moving config to a new machine
+(defvar reload-packages nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package management ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -20,10 +24,6 @@
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 (package-initialize)
-
-;; Set the following to true (t) when moving config to a new machine
-(defvar reload-packages nil)
-
 
 (when reload-packages						        
   (package-refresh-contents)				        
@@ -49,7 +49,7 @@
 ;; Load Required Packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar local-pkgs
-  (list 'emacs-os 'ein 'google 'grep-buffers 'hide-lines 'language-styles 'misc 'revbufs 'show-functions))
+  (list 'emacs-os 'google 'grep-buffers 'hide-lines 'language-styles 'misc 'revbufs 'show-functions))
 
 (mapcar 'require local-pkgs)
 
