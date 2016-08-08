@@ -24,17 +24,15 @@
 ;; Set the following to true (t) when moving config to a new machine
 (defvar reload-packages nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (if reload-packages						        ;;
-;;     (package-refresh-contents)				        ;;
-;;   (when (not (package-installed-p 'save-packages))		        ;;
-;;     (package-install 'save-packages))			        ;;
-;;   ;; Restore all the saved packages from the index.		        ;;
-;;   ;; The following poses an interactive question, wether or not      ;;
-;;   ;; to install a package. To say yes for all, choose the option '!' ;;
-;;   (install-saved-packages))					        ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(when reload-packages						        
+  (package-refresh-contents)				        
+  (when (not (package-installed-p 'save-packages))		        
+    (package-install 'save-packages))			        
+  ;; Restore all the saved packages from the index.		        
+  ;; The following poses an interactive question, wether or not      
+  ;; to install a package. To say yes for all, choose the option '!' 
+  (install-saved-packages))					        
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set and LoadPaths  ;;
@@ -51,12 +49,7 @@
 ;; Load Required Packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar local-pkgs
-  (list 'auto-complete-config 'autopair 'butler 'emacs-os
-        'ein 'google 'grep-buffers 'helm-config 'hide-lines
-        'highlight-indentation 'js2-mode 'language-styles
-        'misc 'moinmoin-mode 'nexus 'org-install
-        'pytest 'revbufs 'save-packages 'show-functions
-        'xub-mode 'xub-mode 'transpose-frame 'yasnippet))
+  (list 'emacs-os 'ein 'google 'grep-buffers 'hide-lines 'language-styles 'misc 'revbufs 'show-functions))
 
 (mapcar 'require local-pkgs)
 
@@ -76,8 +69,6 @@
 (size-indication-mode t)
 (tool-bar-mode -1)
 (which-function-mode t)
-(yas-reload-all)
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -103,11 +94,11 @@
 (add-to-list 'auto-mode-alist '("\\.clj$" .        clojure-mode))
 
 
-;; (eval-after-load 'flycheck '(flycheck-clojure-setup))
+(eval-after-load 'flycheck '(flycheck-clojure-setup))
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; (eval-after-load 'flycheck
-;;   '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+(eval-after-load 'flycheck
+  '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 ;;;;;;;;;;;;;;;
 ;; Add hooks ;;
@@ -124,7 +115,7 @@
 (add-hook 'markdown-mode-hook 'pandoc-mode)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
 (add-hook 'java-mode-hook #'yas-minor-mode)
-;; (add-hook 'python-mode-hook (lambda() (highlight-indentation-mode)))
+(add-hook 'python-mode-hook (lambda() (highlight-indentation-mode)))
 
 
 (defun cider-namespace-refresh ()
@@ -263,7 +254,7 @@
  '(cua-mode nil nil (cua-base))
  '(custom-safe-themes
    (quote
-    ("12722541c8998f056b761bf63a92216aaf4610e4eb1afe7991842a31fa28b6d8" "cee3ced547529a0923830318df23cb329255b963e39951d79fd7e56c54b0ade3" "c4a784404a2a732ef86ee969ab94ec8b8033aee674cd20240b8addeba93e1612" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" default)))
+    ("4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "12722541c8998f056b761bf63a92216aaf4610e4eb1afe7991842a31fa28b6d8" "cee3ced547529a0923830318df23cb329255b963e39951d79fd7e56c54b0ade3" "c4a784404a2a732ef86ee969ab94ec8b8033aee674cd20240b8addeba93e1612" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" default)))
  '(diary-entry-marker (quote font-lock-variable-name-face))
  '(emms-mode-line-icon-image-cache
    (quote
@@ -315,7 +306,7 @@ static char *gnus-pointer[] = {
  '(hl-paren-colors
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
- '(linum-format " %5i ")
+ '(linum-format " %4i ")
  '(main-line-color1 "#222912")
  '(main-line-color2 "#09150F")
  '(notmuch-search-line-faces
