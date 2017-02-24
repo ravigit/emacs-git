@@ -63,7 +63,7 @@
 (global-hi-lock-mode 1)
 (global-linum-mode t)
 (scroll-bar-mode -1)
-;; (semantic-mode 1)
+(semantic-mode 1)
 (setq scroll-step 1)
 (show-paren-mode t)
 (size-indication-mode t)
@@ -200,6 +200,7 @@
 (global-set-key (kbd "s-d") 'disable-themes)
 (global-set-key (kbd "s-w") 'whack-whitespace)
 
+
 ;; (define-key clojure-mode-map (kbd "M-r") 'cider-namespace-refresh)
 
 (defadvice load-theme (before disable-before-load)
@@ -247,14 +248,22 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
+   [default default default italic underline success warning error])
+ '(ansi-color-map (ansi-color-make-color-map) t)
  '(ansi-color-names-vector
-   ["#3f3f3f" "#ea3838" "#7fb07f" "#fe8b04" "#62b6ea" "#e353b9" "#1fb3b3" "#d5d2be"])
- '(column-number-mode t)
+   ["#ede9e7" "#ef001b" "#8cc610" "#eea806" "#23cbfe" "#ec3691" "#1ee079" "#272b34"])
+ '(ansi-term-color-vector
+   [unspecified "#0b1c2c" "#bf8b56" "#56bf8b" "#8bbf56" "#8b56bf" "#bf568b" "#8b56bf" "#cbd6e2"])
+ '(beacon-color "#ec4780")
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#2aa198")
  '(cua-mode nil nil (cua-base))
+ '(cua-normal-cursor-color "#657b83")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "12722541c8998f056b761bf63a92216aaf4610e4eb1afe7991842a31fa28b6d8" "cee3ced547529a0923830318df23cb329255b963e39951d79fd7e56c54b0ade3" "c4a784404a2a732ef86ee969ab94ec8b8033aee674cd20240b8addeba93e1612" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" default)))
+    ("98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "6998bd3671091820a6930b52aab30b776faea41449b4246fdce14079b3e7d125" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" default)))
  '(diary-entry-marker (quote font-lock-variable-name-face))
  '(emms-mode-line-icon-image-cache
    (quote
@@ -263,7 +272,7 @@ static char *note[] = {
 /* width height num_colors chars_per_pixel */
 \"    10   11        2            1\",
 /* colors */
-\". c #1fb3b3\",
+\". c #358d8d\",
 \"# c None s None\",
 /* pixels */
 \"###...####\",
@@ -277,9 +286,13 @@ static char *note[] = {
 \"#######...\",
 \"######....\",
 \"#######..#\" };")))
- '(fci-rule-color "#222222")
- '(fringe-mode 10 nil (fringe))
- '(gnus-logo-colors (quote ("#528d8d" "#c0c0c0")) t)
+ '(evil-emacs-state-cursor (quote ("#E57373" hbar)) t)
+ '(evil-insert-state-cursor (quote ("#E57373" bar)) t)
+ '(evil-normal-state-cursor (quote ("#FFEE58" box)) t)
+ '(evil-visual-state-cursor (quote ("#C5E1A5" box)) t)
+ '(fci-rule-color "#f6f0e1")
+ '(fringe-mode 6 nil (fringe))
+ '(gnus-logo-colors (quote ("#259ea2" "#adadad")))
  '(gnus-mode-line-image-cache
    (quote
     (image :type xpm :ascent center :data "/* XPM */
@@ -287,7 +300,7 @@ static char *gnus-pointer[] = {
 /* width height num_colors chars_per_pixel */
 \"    18    13        2            1\",
 /* colors */
-\". c #1fb3b3\",
+\". c #358d8d\",
 \"# c None s None\",
 /* pixels */
 \"##################\",
@@ -302,50 +315,88 @@ static char *gnus-pointer[] = {
 \"######..###.######\",
 \"###....####.######\",
 \"###..######.######\",
-\"###########.######\" };")) t)
- '(hl-paren-colors
+\"###########.######\" };")))
+ '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(highlight-indent-guides-auto-enabled nil)
+ '(highlight-symbol-colors
+   (--map
+    (solarized-color-blend it "#fdf6e3" 0.25)
+    (quote
+     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
+ '(highlight-symbol-foreground-color "#586e75")
+ '(highlight-tail-colors
    (quote
-    ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
- '(linum-format " %4i ")
- '(main-line-color1 "#222912")
- '(main-line-color2 "#09150F")
- '(notmuch-search-line-faces
+    (("#eee8d5" . 0)
+     ("#B4C342" . 20)
+     ("#69CABF" . 30)
+     ("#69B7F0" . 50)
+     ("#DEB542" . 60)
+     ("#F2804F" . 70)
+     ("#F771AC" . 85)
+     ("#eee8d5" . 100))))
+ '(hl-bg-colors
    (quote
-    (("unread" :foreground "#aeee00")
-     ("flagged" :foreground "#0a9dff")
-     ("deleted" :foreground "#ff2c4b" :bold t))))
- '(powerline-color1 "#222912")
- '(powerline-color2 "#09150F")
- '(rainbow-identifiers-choose-face-function (quote rainbow-identifiers-cie-l*a*b*-choose-face))
- '(rainbow-identifiers-cie-l*a*b*-color-count 1024)
- '(rainbow-identifiers-cie-l*a*b*-lightness 80)
- '(rainbow-identifiers-cie-l*a*b*-saturation 25)
- '(show-paren-mode t)
- '(size-indication-mode t)
- '(tool-bar-mode nil)
- '(transient-mark-mode (quote (only . t)))
- '(vc-annotate-background "#222222")
+    ("#DEB542" "#F2804F" "#FF6E64" "#F771AC" "#9EA0E5" "#69B7F0" "#69CABF" "#B4C342")))
+ '(hl-fg-colors
+   (quote
+    ("#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3")))
+ '(hl-sexp-background-color "#efebe9")
+ '(ibuffer-deletion-face (quote diredp-deletion-file-name))
+ '(ibuffer-marked-face (quote diredp-flag-mark))
+ '(linum-format (quote dynamic))
+ '(magit-diff-use-overlays nil)
+ '(nrepl-message-colors
+   (quote
+    ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
+ '(package-selected-packages
+   (quote
+    (apropospriate-theme base16-theme basic-theme faff-theme flatui-theme green-phosphor-theme greymatters-theme gruvbox-theme inkpot-theme intellij-theme iodine-theme jazz-theme jbeans-theme lavender-theme lenlen-theme leuven-theme light-soap-theme lush-theme majapahit-theme material-theme meacupla-theme metalheart-theme minimal-theme moe-theme oceanic-theme org-beautify-theme paper-theme peacock-theme professional-theme align-cljlet applescript-mode zone-matrix zencoding-mode zenburn zen-mode zen-and-art-theme yoshi-theme yaml-mode xkcd window-margin waher-theme w3 virtualenvwrapper underwater-theme ujelly-theme ubuntu-theme transpose-frame toxi-theme tommyh-theme tango-2-theme sx sublime-themes subatomic-theme stekene-theme steady-theme srefactor spike-theme soothe-theme solarized-theme slime-theme sea-before-storm-theme save-packages remember-theme rainbow-mode rainbow-delimiters qsimpleq-theme pyvenv python-pylint python-pep8 python-mode python-info python-environment pytest pysmell pylint pyimpsort pyflakes pydoc-info pydoc pyde py-autopep8 pep8 pastels-on-dark-theme pastelmac-theme pastebin pandoc-mode paganini-theme org2blog org-table-comment org-mime org-magit org-blog nzenburn-theme nose-mode nlinum nexus moinmoin-mode mo-git-blame minimap magit-tramp magit-topgit magit-gitflow magit-gerrit magit-find-file magit-filenotify magit-annex liso-theme late-night-theme labburn-theme jujube-theme javadoc-lookup jabber ir-black-theme ipython inf-clojure idea-darkula-theme hydandata-light-theme highlight-indentation hide-lines heroku-theme helm-pydoc helm-ls-git helm-helm-commands helm-google helm-git-grep helm-git-files helm-git helm-dash hc-zenburn-theme hamburg-theme gruber-darker-theme groovy-mode gratuitous-dark-theme grandshell-theme gotham-theme gitty github-theme gitconfig-mode gitconfig gandalf-theme forest-blue-theme foggy-night-theme flymake-shell flymake-python-pyflakes flycheck-pos-tip flycheck-clojure flatland-theme flatland-black-theme firecode-theme firebelly-theme fill-column-indicator farmhouse-theme eyuml exec-path-from-shell espresso-theme ein-mumamo django-theme distinguished-theme deep-thought-theme dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-krystal-theme darcula-theme cyberpunk-theme column-marker colonoscopy-theme col-highlight clues-theme clojure-snippets clojure-quick-repls clojure-mode-extra-font-locking clojure-cheatsheet clj-refactor cider-eval-sexp-fu cherry-blossom-theme caroline-theme calmer-forest-theme butler busybee-theme bubbleberry-theme boron-theme borland-blue-theme bm bliss-theme blank-mode birds-of-paradise-plus-theme bash-completion badwolf-theme badger-theme autopair auto-yasnippet auto-shell-command auto-save-buffers-enhanced auto-install auto-indent-mode auto-highlight-symbol auto-dictionary auto-complete-sage auto-complete-rst auto-complete-pcmp auto-complete-nxml auto-complete-exuberant-ctags auto-complete-clang-async auto-complete-clang auto-complete-chunk auto-complete-c-headers auto-complete-auctex aurora-theme atom-one-dark-theme atom-dark-theme assemblage-theme arjen-grey-theme apt-utils ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme adaptive-wrap ack ac-python ac-nrepl ac-js2 ac-ispell ac-cider abyss-theme 4clojure)))
+ '(pos-tip-background-color "#eee8d5")
+ '(pos-tip-foreground-color "#586e75")
+ '(powerline-color1 "#3d3d68")
+ '(powerline-color2 "#292945")
+ '(semantic-mode t)
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
+ '(tabbar-background-color "#353535")
+ '(term-default-bg-color "#fdf6e3")
+ '(term-default-fg-color "#657b83")
+ '(vc-annotate-background "#f6f0e1")
  '(vc-annotate-color-map
    (quote
-    ((20 . "#fa5151")
-     (40 . "#ea3838")
-     (60 . "#f8ffa0")
-     (80 . "#e8e815")
-     (100 . "#fe8b04")
-     (120 . "#e5c900")
-     (140 . "#32cd32")
-     (160 . "#8ce096")
-     (180 . "#7fb07f")
-     (200 . "#3cb370")
-     (220 . "#099709")
-     (240 . "#2fdbde")
-     (260 . "#1fb3b3")
-     (280 . "#8cf1f1")
-     (300 . "#94bff3")
-     (320 . "#62b6ea")
-     (340 . "#00aff5")
-     (360 . "#e353b9"))))
- '(vc-annotate-very-old-color "#e353b9"))
+    ((20 . "#d81212")
+     (40 . "#f71010")
+     (60 . "#6a621b")
+     (80 . "#958323")
+     (100 . "#ef8300")
+     (120 . "#9ca30b")
+     (140 . "#008b45")
+     (160 . "#077707")
+     (180 . "#028902")
+     (200 . "#1c9e28")
+     (220 . "#3cb368")
+     (240 . "#0d7b72")
+     (260 . "#358d8d")
+     (280 . "#286060")
+     (300 . "#0505cc")
+     (320 . "#0000ff")
+     (340 . "#2c53ca")
+     (360 . "#a020f0"))))
+ '(vc-annotate-very-old-color "#a020f0")
+ '(weechat-color-list
+   (quote
+    (unspecified "#fdf6e3" "#eee8d5" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#657b83" "#839496")))
+ '(when
+      (or
+       (not
+        (boundp
+         (quote ansi-term-color-vector)))
+       (not
+        (facep
+         (aref ansi-term-color-vector 0)))))
+ '(xterm-color-names
+   ["#eee8d5" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#073642"])
+ '(xterm-color-names-bright
+   ["#fdf6e3" "#cb4b16" "#93a1a1" "#839496" "#657b83" "#6c71c4" "#586e75" "#002b36"]))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
