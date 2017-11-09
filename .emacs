@@ -25,14 +25,14 @@
 
 (package-initialize)
 
-(when reload-packages						        
-  (package-refresh-contents)				        
-  (when (not (package-installed-p 'save-packages))		        
-    (package-install 'save-packages))			        
-  ;; Restore all the saved packages from the index.		        
-  ;; The following poses an interactive question, wether or not      
-  ;; to install a package. To say yes for all, choose the option '!' 
-  (install-saved-packages))					        
+(when reload-packages
+  (package-refresh-contents)
+  (when (not (package-installed-p 'save-packages))
+    (package-install 'save-packages))
+  ;; Restore all the saved packages from the index.
+  ;; The following poses an interactive question, wether or not
+  ;; to install a package. To say yes for all, choose the option '!'
+  (install-saved-packages))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set and LoadPaths  ;;
@@ -40,9 +40,8 @@
 
 (add-to-list 'exec-path "/usr/local/bin")
 (let ((load-dirs '("site-lisp")))
-  (mapcar (lambda(dir)
+  (mapc (lambda(dir)
             (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -51,7 +50,7 @@
 (defvar local-pkgs
   (list 'emacs-os 'google 'grep-buffers 'hide-lines 'language-styles 'misc 'revbufs 'show-functions))
 
-(mapcar 'require local-pkgs)
+(mapc 'require local-pkgs)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Set mode parameters ;;
@@ -170,19 +169,19 @@
                  '([f3]        xah-emacs-help)
                  '([f5]        search-index)
                  )))
-  (mapcar (lambda (mapping)
-            (let ((key (car mapping))
-                  (func (cadr mapping)))
-              (progn
-                (message (format "map key %s to %s" key func))
-                (global-set-key key func))))
-          mappings))
+  (mapc (lambda (mapping)
+          (let ((key (car mapping))
+                (func (cadr mapping)))
+            (progn
+              (message (format "map key %s to %s" key func))
+              (global-set-key key func))))
+        mappings))
 
 
 (defun disable-themes ()
   (interactive)
   "Disable all loaded themes"
-  (mapcar 'disable-theme custom-enabled-themes))
+  (mapc 'disable-theme custom-enabled-themes))
 
 
 (global-set-key (kbd "s-a") 'package-list-packages)
@@ -206,7 +205,7 @@
 (defadvice load-theme (before disable-before-load)
   "Disable any loaded themes before enabling a new theme.
  This prevents overlapping themes; something I would rarely want."
-  (mapcar 'disable-theme custom-enabled-themes))
+  (mapc 'disable-theme custom-enabled-themes))
 
 (ad-activate 'load-theme)
 
@@ -234,6 +233,10 @@
 (global-set-key "\C-x\C-c" 'confirm-exit-emacs)
 
 
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; Replace "sbcl" with the path to your implementation
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+
 ;;;;;;;;;;;;;;;;;;
 ;; Emacs Server ;;
 ;;;;;;;;;;;;;;;;;;
@@ -255,15 +258,16 @@
  '(ansi-term-color-vector
    [unspecified "#0b1c2c" "#bf8b56" "#56bf8b" "#8bbf56" "#8b56bf" "#bf568b" "#8b56bf" "#cbd6e2"])
  '(beacon-color "#ec4780")
+ '(column-number-mode t)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
- '(cua-mode nil nil (cua-base))
+ '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "#657b83")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "6998bd3671091820a6930b52aab30b776faea41449b4246fdce14079b3e7d125" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" default)))
+    ("b79104a19e95f10698badb711bd4ab25565af3ffcf18fa7d3c7db4de7d759ac8" "08b8807d23c290c840bbb14614a83878529359eaba1805618b3be7d61b0b0a32" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "6998bd3671091820a6930b52aab30b776faea41449b4246fdce14079b3e7d125" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" default)))
  '(diary-entry-marker (quote font-lock-variable-name-face))
  '(emms-mode-line-icon-image-cache
    (quote
@@ -291,7 +295,7 @@ static char *note[] = {
  '(evil-normal-state-cursor (quote ("#FFEE58" box)) t)
  '(evil-visual-state-cursor (quote ("#C5E1A5" box)) t)
  '(fci-rule-color "#f6f0e1")
- '(fringe-mode 6 nil (fringe))
+. '(fringe-mode 6 nil (fringe))
  '(gnus-logo-colors (quote ("#259ea2" "#adadad")))
  '(gnus-mode-line-image-cache
    (quote
@@ -345,21 +349,30 @@ static char *gnus-pointer[] = {
  '(ibuffer-marked-face (quote diredp-flag-mark))
  '(linum-format (quote dynamic))
  '(magit-diff-use-overlays nil)
+ '(notmuch-search-line-faces
+   (quote
+    (("unread" :foreground "#aeee00")
+     ("flagged" :foreground "#0a9dff")
+     ("deleted" :foreground "#ff2c4b" :bold t))))
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (apropospriate-theme base16-theme basic-theme faff-theme flatui-theme green-phosphor-theme greymatters-theme gruvbox-theme inkpot-theme intellij-theme iodine-theme jazz-theme jbeans-theme lavender-theme lenlen-theme leuven-theme light-soap-theme lush-theme majapahit-theme material-theme meacupla-theme metalheart-theme minimal-theme moe-theme oceanic-theme org-beautify-theme paper-theme peacock-theme professional-theme align-cljlet applescript-mode zone-matrix zencoding-mode zenburn zen-mode zen-and-art-theme yoshi-theme yaml-mode xkcd window-margin waher-theme w3 virtualenvwrapper underwater-theme ujelly-theme ubuntu-theme transpose-frame toxi-theme tommyh-theme tango-2-theme sx sublime-themes subatomic-theme stekene-theme steady-theme srefactor spike-theme soothe-theme solarized-theme slime-theme sea-before-storm-theme save-packages remember-theme rainbow-mode rainbow-delimiters qsimpleq-theme pyvenv python-pylint python-pep8 python-mode python-info python-environment pytest pysmell pylint pyimpsort pyflakes pydoc-info pydoc pyde py-autopep8 pep8 pastels-on-dark-theme pastelmac-theme pastebin pandoc-mode paganini-theme org2blog org-table-comment org-mime org-magit org-blog nzenburn-theme nose-mode nlinum nexus moinmoin-mode mo-git-blame minimap magit-tramp magit-topgit magit-gitflow magit-gerrit magit-find-file magit-filenotify magit-annex liso-theme late-night-theme labburn-theme jujube-theme javadoc-lookup jabber ir-black-theme ipython inf-clojure idea-darkula-theme hydandata-light-theme highlight-indentation hide-lines heroku-theme helm-pydoc helm-ls-git helm-helm-commands helm-google helm-git-grep helm-git-files helm-git helm-dash hc-zenburn-theme hamburg-theme gruber-darker-theme groovy-mode gratuitous-dark-theme grandshell-theme gotham-theme gitty github-theme gitconfig-mode gitconfig gandalf-theme forest-blue-theme foggy-night-theme flymake-shell flymake-python-pyflakes flycheck-pos-tip flycheck-clojure flatland-theme flatland-black-theme firecode-theme firebelly-theme fill-column-indicator farmhouse-theme eyuml exec-path-from-shell espresso-theme ein-mumamo django-theme distinguished-theme deep-thought-theme dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-krystal-theme darcula-theme cyberpunk-theme column-marker colonoscopy-theme col-highlight clues-theme clojure-snippets clojure-quick-repls clojure-mode-extra-font-locking clojure-cheatsheet clj-refactor cider-eval-sexp-fu cherry-blossom-theme caroline-theme calmer-forest-theme butler busybee-theme bubbleberry-theme boron-theme borland-blue-theme bm bliss-theme blank-mode birds-of-paradise-plus-theme bash-completion badwolf-theme badger-theme autopair auto-yasnippet auto-shell-command auto-save-buffers-enhanced auto-install auto-indent-mode auto-highlight-symbol auto-dictionary auto-complete-sage auto-complete-rst auto-complete-pcmp auto-complete-nxml auto-complete-exuberant-ctags auto-complete-clang-async auto-complete-clang auto-complete-chunk auto-complete-c-headers auto-complete-auctex aurora-theme atom-one-dark-theme atom-dark-theme assemblage-theme arjen-grey-theme apt-utils ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme adaptive-wrap ack ac-python ac-nrepl ac-js2 ac-ispell ac-cider abyss-theme 4clojure)))
+    (ensime apropospriate-theme base16-theme basic-theme faff-theme flatui-theme green-phosphor-theme greymatters-theme gruvbox-theme inkpot-theme intellij-theme iodine-theme jazz-theme jbeans-theme lavender-theme lenlen-theme leuven-theme light-soap-theme lush-theme majapahit-theme material-theme meacupla-theme metalheart-theme minimal-theme moe-theme oceanic-theme org-beautify-theme paper-theme peacock-theme professional-theme align-cljlet applescript-mode zone-matrix zencoding-mode zenburn zen-mode zen-and-art-theme yoshi-theme yaml-mode xkcd window-margin waher-theme w3 virtualenvwrapper underwater-theme ujelly-theme ubuntu-theme transpose-frame toxi-theme tommyh-theme tango-2-theme sx sublime-themes subatomic-theme steady-theme srefactor spike-theme soothe-theme solarized-theme slime-theme sea-before-storm-theme save-packages remember-theme rainbow-mode rainbow-delimiters qsimpleq-theme pyvenv python-pylint python-pep8 python-mode python-info python-environment pytest pysmell pylint pyimpsort pyflakes pydoc-info pydoc pyde py-autopep8 pep8 pastels-on-dark-theme pastelmac-theme pastebin pandoc-mode paganini-theme org2blog org-table-comment org-mime org-magit org-blog nzenburn-theme nose-mode nlinum nexus moinmoin-mode mo-git-blame minimap magit-tramp magit-topgit magit-gitflow magit-gerrit magit-find-file magit-filenotify magit-annex liso-theme late-night-theme labburn-theme jujube-theme javadoc-lookup jabber ir-black-theme ipython inf-clojure idea-darkula-theme hydandata-light-theme highlight-indentation hide-lines heroku-theme helm-pydoc helm-ls-git helm-helm-commands helm-google helm-git-grep helm-git-files helm-git helm-dash hc-zenburn-theme hamburg-theme gruber-darker-theme groovy-mode gratuitous-dark-theme grandshell-theme gotham-theme gitty github-theme gitconfig-mode gitconfig gandalf-theme forest-blue-theme foggy-night-theme flymake-shell flymake-python-pyflakes flycheck-pos-tip flycheck-clojure flatland-theme flatland-black-theme firecode-theme firebelly-theme fill-column-indicator farmhouse-theme eyuml exec-path-from-shell espresso-theme ein-mumamo django-theme distinguished-theme deep-thought-theme dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-krystal-theme darcula-theme cyberpunk-theme column-marker colonoscopy-theme col-highlight clues-theme clojure-snippets clojure-quick-repls clojure-mode-extra-font-locking clojure-cheatsheet clj-refactor cider-eval-sexp-fu cherry-blossom-theme caroline-theme calmer-forest-theme butler busybee-theme bubbleberry-theme boron-theme borland-blue-theme bm bliss-theme blank-mode birds-of-paradise-plus-theme bash-completion badwolf-theme badger-theme autopair auto-yasnippet auto-shell-command auto-save-buffers-enhanced auto-install auto-indent-mode auto-highlight-symbol auto-dictionary auto-complete-sage auto-complete-rst auto-complete-pcmp auto-complete-nxml auto-complete-exuberant-ctags auto-complete-clang-async auto-complete-clang auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme assemblage-theme arjen-grey-theme apt-utils ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme adaptive-wrap ack ac-python ac-nrepl ac-js2 ac-ispell ac-cider abyss-theme 4clojure)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(powerline-color1 "#3d3d68")
  '(powerline-color2 "#292945")
+ '(scroll-bar-mode nil)
  '(semantic-mode t)
+ '(show-paren-mode t)
+ '(size-indication-mode t)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
  '(tabbar-background-color "#353535")
  '(term-default-bg-color "#fdf6e3")
  '(term-default-fg-color "#657b83")
+ '(tool-bar-mode nil)
  '(vc-annotate-background "#f6f0e1")
  '(vc-annotate-color-map
    (quote
@@ -396,7 +409,11 @@ static char *gnus-pointer[] = {
  '(xterm-color-names
    ["#eee8d5" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#073642"])
  '(xterm-color-names-bright
-   ["#fdf6e3" "#cb4b16" "#93a1a1" "#839496" "#657b83" "#6c71c4" "#586e75" "#002b36"]))
+   ["#fdf6e3" "#cb4b16" "#93a1a1" "#839496" "#657b83" "#6c71c4" "#586e75" "#002b36"])
+ '(zen-encumbered-urls
+   (quote
+    ("#brief timewastes" "www.penny-arcade.com" "www.dilbert.com" "www.xkcd.com" "www.userfriendly.org" "#news waste" "slashdot.org" "dn.se" "#social timewastes" "https://www.facebook.com")))
+ '(zen-fullscreen-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
