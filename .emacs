@@ -143,7 +143,7 @@ static char *gnus-pointer[] = {
  '(org-fontify-whole-heading-line t)
  '(org-src-block-faces 'nil)
  '(package-selected-packages
-   '(flycheck-clj-kondo clj-refactor json-navigator json-mode java-imports java-snippets monotropic-theme cider autothemer commentary-theme creamsody-theme doneburn-theme doom-themes dracula-theme paredit omtose-phellack-theme cider-decompile cider-hydra ripgrep terraform-mode apropospriate-theme base16-theme basic-theme faff-theme flatui-theme green-phosphor-theme greymatters-theme gruvbox-theme inkpot-theme intellij-theme iodine-theme jazz-theme jbeans-theme lavender-theme lenlen-theme leuven-theme light-soap-theme lush-theme majapahit-theme material-theme metalheart-theme minimal-theme moe-theme oceanic-theme org-beautify-theme paper-theme peacock-theme professional-theme align-cljlet applescript-mode zone-matrix zencoding-mode zenburn zen-mode zen-and-art-theme yoshi-theme yaml-mode xkcd window-margin waher-theme w3 virtualenvwrapper underwater-theme ujelly-theme ubuntu-theme transpose-frame toxi-theme tommyh-theme tango-2-theme sx sublime-themes subatomic-theme steady-theme srefactor spike-theme soothe-theme solarized-theme slime-theme sea-before-storm-theme save-packages remember-theme rainbow-mode rainbow-delimiters qsimpleq-theme pyvenv python-pylint python-pep8 python-mode python-info python-environment pytest pysmell pylint pyimpsort pyflakes pydoc-info pydoc pyde py-autopep8 pep8 pastels-on-dark-theme pastelmac-theme pastebin pandoc-mode paganini-theme org2blog org-table-comment org-mime org-magit org-blog nzenburn-theme nose-mode nlinum nexus moinmoin-mode mo-git-blame minimap magit-tramp magit-topgit magit-gitflow magit-gerrit magit-find-file magit-filenotify magit-annex liso-theme late-night-theme labburn-theme jujube-theme javadoc-lookup jabber ir-black-theme ipython inf-clojure idea-darkula-theme hydandata-light-theme highlight-indentation hide-lines heroku-theme helm-pydoc helm-ls-git helm-helm-commands helm-google helm-git-grep helm-git-files helm-git helm-dash hc-zenburn-theme hamburg-theme gruber-darker-theme groovy-mode gratuitous-dark-theme grandshell-theme gotham-theme gitty github-theme gitconfig-mode gitconfig gandalf-theme forest-blue-theme foggy-night-theme flymake-shell flymake-python-pyflakes flycheck-pos-tip flycheck-clojure flatland-theme flatland-black-theme firecode-theme fill-column-indicator farmhouse-theme eyuml exec-path-from-shell espresso-theme ein-mumamo django-theme distinguished-theme deep-thought-theme dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-krystal-theme darcula-theme cyberpunk-theme column-marker colonoscopy-theme col-highlight clues-theme clojure-snippets clojure-quick-repls clojure-mode-extra-font-locking clojure-cheatsheet cherry-blossom-theme caroline-theme calmer-forest-theme butler busybee-theme bubbleberry-theme boron-theme borland-blue-theme bm bliss-theme blank-mode birds-of-paradise-plus-theme bash-completion badwolf-theme badger-theme  auto-yasnippet auto-shell-command auto-save-buffers-enhanced auto-install auto-indent-mode auto-highlight-symbol auto-dictionary auto-complete-sage auto-complete-rst auto-complete-pcmp auto-complete-nxml auto-complete-exuberant-ctags auto-complete-clang-async auto-complete-clang auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme assemblage-theme arjen-grey-theme apt-utils ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme adaptive-wrap ack ac-python ac-nrepl ac-js2 ac-ispell ac-cider abyss-theme 4clojure))
+   '(flycheck-clj-kondo clj-refactor json-navigator json-mode java-imports java-snippets monotropic-theme cider autothemer commentary-theme creamsody-theme doneburn-theme doom-themes dracula-theme paredit omtose-phellack-theme cider-decompile cider-hydra ripgrep terraform-mode apropospriate-theme base16-theme basic-theme faff-theme flatui-theme green-phosphor-theme greymatters-theme gruvbox-theme inkpot-theme intellij-theme iodine-theme jazz-theme jbeans-theme lavender-theme lenlen-theme leuven-theme light-soap-theme lush-theme majapahit-theme material-theme metalheart-theme minimal-theme moe-theme oceanic-theme org-beautify-theme paper-theme peacock-theme professional-theme align-cljlet applescript-mode zone-matrix zencoding-mode zenburn zen-mode zen-and-art-theme yoshi-theme yaml-mode xkcd window-margin waher-theme w3 virtualenvwrapper underwater-theme ujelly-theme ubuntu-theme transpose-frame toxi-theme tommyh-theme tango-2-theme sx sublime-themes subatomic-theme steady-theme srefactor spike-theme soothe-theme solarized-theme slime-theme sea-before-storm-theme save-packages remember-theme rainbow-mode rainbow-delimiters qsimpleq-theme pyvenv python-pylint python-pep8 python-mode python-info python-environment pytest pysmell pylint pyimpsort pyflakes pydoc-info pydoc pyde py-autopep8 pep8 pastels-on-dark-theme pastelmac-theme pastebin pandoc-mode paganini-theme org2blog org-table-comment org-mime org-magit org-blog nzenburn-theme nose-mode nlinum nexus moinmoin-mode mo-git-blame minimap magit-tramp magit-topgit magit-gitflow magit-gerrit magit-find-file magit-filenotify magit-annex liso-theme late-night-theme labburn-theme jujube-theme javadoc-lookup jabber ir-black-theme ipython inf-clojure idea-darkula-theme hydandata-light-theme highlight-indentation hide-lines heroku-theme helm-pydoc helm-ls-git helm-helm-commands helm-google helm-git-grep helm-git-files helm-git helm-dash hc-zenburn-theme hamburg-theme gruber-darker-theme groovy-mode gratuitous-dark-theme grandshell-theme gotham-theme gitty github-theme gitconfig-mode gitconfig gandalf-theme forest-blue-theme foggy-night-theme flymake-shell flymake-python-pyflakes flycheck-pos-tip flycheck-clojure flatland-theme flatland-black-theme firecode-theme fill-column-indicator farmhouse-theme eyuml exec-path-from-shell espresso-theme ein-mumamo django-theme distinguished-theme deep-thought-theme dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-krystal-theme darcula-theme cyberpunk-theme column-marker colonoscopy-theme col-highlight clues-theme clojure-snippets clojure-quick-repls clojure-mode-extra-font-locking clojure-cheatsheet cherry-blossom-theme caroline-theme calmer-forest-theme butler busybee-theme bubbleberry-theme boron-theme borland-blue-theme bm bliss-theme blank-mode birds-of-paradise-plus-theme bash-completion badwolf-theme badger-theme auto-yasnippet auto-shell-command auto-save-buffers-enhanced auto-install auto-indent-mode auto-highlight-symbol auto-dictionary auto-complete-sage auto-complete-rst auto-complete-pcmp auto-complete-nxml auto-complete-exuberant-ctags auto-complete-clang-async auto-complete-clang auto-complete-chunk auto-complete-c-headers atom-one-dark-theme atom-dark-theme assemblage-theme arjen-grey-theme apt-utils ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme adaptive-wrap ack ac-python ac-nrepl ac-js2 ac-ispell ac-cider abyss-theme 4clojure))
  '(pdf-view-midnight-colors '("#ffffff" . "#110b11"))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
@@ -151,7 +151,6 @@ static char *gnus-pointer[] = {
  '(powerline-color2 "#292945")
  '(scroll-bar-mode nil)
  '(semantic-mode t)
- '(show-paren-mode t)
  '(size-indication-mode t)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
  '(tabbar-background-color "#353535")
@@ -180,6 +179,7 @@ static char *gnus-pointer[] = {
      (340 . "#2c53ca")
      (360 . "#a020f0")))
  '(vc-annotate-very-old-color "#a020f0")
+ '(warning-suppress-log-types '((comp)))
  '(weechat-color-list
    '(unspecified "#fdf6e3" "#eee8d5" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#657b83" "#839496"))
  '(when
@@ -201,324 +201,22 @@ static char *gnus-pointer[] = {
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
+ '(default ((t (:inherit nil :stipple nil :background "#282C34" :foreground "#ABB2BF" :inverse-video nil :box nil :strike-through nil :extend nil :overline nil :underline nil :slant normal :weight normal :height 150 :width normal :foundry "nil" :family "IBM Plex Mono"))))
  '(bm-face ((t (:underline t))))
  '(bm-fringe-face ((t (:underline t)))))
 
-
-
-;; Set the following to true (t) when moving config to a new machine
-(defvar reload-packages t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Package management ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'package)
-
-(setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")))
-
-(add-to-list 'package-pinned-packages '(cider . "melpa") t)
-
-(package-initialize)
-
-(when reload-packages
-  (if (< emacs-major-version 25)
-    (progn
-      (package-refresh-contents)
-      (when (not (package-installed-p 'save-packages))
-	(package-install 'save-packages))
-      ;; Restore all the saved packages from the index.
-      ;; The following poses an interactive question, wether or not
-      ;; to install a package. To say yes for all, choose the option '!'
-      (install-saved-packages))
-    ;else
-    (package-install-selected-packages)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set and LoadPaths  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-
-(add-to-list 'exec-path "/usr/local/bin")
-(add-to-list 'exec-path "/usr/bin")
 (let ((load-dirs '("site-lisp")))
   (mapc (lambda(dir)
             (add-to-list 'load-path (concat "~/.emacs.d/" dir))) load-dirs))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Load Required Packages ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'ansi-color)
-
-(defvar local-pkgs
-  (list 'emacs-os 'google 'grep-buffers 'hide-lines 'language-styles 'misc 'revbufs 'show-functions 'airline-themes))
-
-(mapc 'require local-pkgs)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set mode parameters ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(electric-pair-mode)
-(column-number-mode t)
-(desktop-save-mode 1)
- (fringe-mode)
-(global-hi-lock-mode 1)
-(global-linum-mode t)
-(scroll-bar-mode -1)
-(semantic-mode 1)
-(setq scroll-step 1)
-(show-paren-mode t)
-(size-indication-mode t)
-(tool-bar-mode -1)
-;(which-function-mode t) ;; Enabling this seems to hang emacs on startup
+;; Set the following to true (t) when moving config to a new machine
+(defvar reload-packages t)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set variables that control emacs behavior ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(ac-config-default)
-(setq python-indent-offset 3)
-(setq ring-bell-function #'ignore)
-(setq scroll-down-aggressively 0.0)
-(setq whitespace-style '(trailing tabs newline tab-mark newline-mark))
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 3)
+;; ALL EMACS CONFIGURATION IS IN emacs-mine CONFIG FILE. PLEASE MAKE CHANGES TO THAT FILE, NOT THE CURRENT ONE
+;; IT IS LOCATED AT ~/.emacs.d/site-lisp/emacs-mine.el
 
+(require 'emacs-mine)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Add mode bindings to file types ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.gradle$" .     groovy-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" .         js2-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp$" .        java-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown$" .   markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md$" .         markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.clj$" .        clojure-mode))
-
-
-(eval-after-load 'flycheck '(flycheck-clojure-setup))
-;; (add-hook 'after-init-hook #'global-flycheck-mode)
-
-(eval-after-load 'flycheck
-  '(setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
-
-;;;;;;;;;;;;;;;
-;; Add hooks ;;
-;;;;;;;;;;;;;;;
-(add-hook 'dired-load-hook (lambda () (load "dired-x")))
-(add-hook 'org-mode-hook (lambda () (flyspell-mode)))
-(add-hook 'clojure-mode-hook (lambda() (enable-paredit-mode)))
-(add-hook 'clojure-mode-hook (lambda() (rainbow-delimiters-mode)))
-(add-hook 'clojure-mode-hook (lambda()
-                               (yas-minor-mode 1)))
-(add-hook 'markdown-mode-hook (lambda() (flyspell-mode 1)))
-(add-hook 'markdown-mode-hook 'pandoc-mode)
-(add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-(add-hook 'java-mode-hook #'yas-minor-mode)
-(add-hook 'python-mode-hook (lambda() (highlight-indentation-mode)))
-
-(defun run-java-file ()
-  (interactive)
-  (let* ((cb         (current-buffer))
-         (buf-name   (concat "run-java-" (buffer-name cb)))
-         (file       (file-name-nondirectory (buffer-file-name cb)))
-         (class-file (replace-regexp-in-string "\\.java" "" file)))
-    (switch-to-buffer-other-window buf-name)
-    (goto-char (point-max))
-    (insert (format-time-string "\n%D %-I:%M %p: (Re)Compiling and Running\n"))
-    (call-process "javac" nil buf-name t file)
-    (call-process "java" nil buf-name t class-file)))
-
-
-(defun cider-namespace-refresh ()
-  (interactive)
-  (cider-interactive-eval
-   "(require 'clojure.tools.namespace.repl)
-    (clojure.tools.namespace.repl/refresh)"))
-
- (defun date (arg)
-   (interactive "P")
-   (insert (if arg
-               (format-time-string "%d.%m.%Y")
-             (format-time-string "%%m-%d-%Y"))))
-
-(defun timestamp ()
-   (interactive)
-   (insert (format-time-string "%%m-%d-%Y %H:%M:%S")))
-
-
-;;;;;;;;;;;;;;;
-;; Key maps  ;;
-;;;;;;;;;;;;;;;
-(let ((mappings (list
-                 '("\C-\\"     uncomment-line-or-region)
-                 '("\C-c'"     gnus)
-                 '("\C-c."     add-to-imports)
-                 '("\C-c/"     comment-line-or-region)
-                 '("\C-c0"     bm-show-all)
-                 '("\C-c1"     bm-toggle)
-                 '("\C-c2"     bm-next)
-                 '("\C-c3"     bm-previous)
-                 '("\C-c;"     search-index)
-                 '("\C-c?"     open-org)
-                 '("\C-c\C-b"  search-forward-regexp)
-                 '("\C-c\C-t"  restart-tomcat)
-                 '("\C-ca"     open-fileline)
-                 '("\C-cb"     grep-buffers)
-                 '("\C-cc"     compile)
-                 '("\C-cd"     vc-diff)
-                 '("\C-ce"     blank-mode)
-                 '("\C-cf"     grep)
-                 '("\C-cg"     google-it)
-                 '("\C-ch"     hide-lines)
-                 '("\C-ci"     transpose-frame)
-                 '("\C-cj"     join-line)
-                 '("\C-ck"     tags-apropos)
-                 '("\C-cl"     cider-connect) ; clojure uses cider
-                 '("\C-cn"     auto-revert-tail-mode)
-                 '("\C-co"     eval-buffer)
-                 '("\C-cp"     goto-line)
-                 '("\C-cq"     query-replace)
-                 '("\C-crf"    recursive-grep)
-                 '("\C-cs"     cscope-find-global-definition)
-                 '("\C-cu"     my-browse-url)
-                 '("\C-cv"     indent-buffer)
-                 '("\C-cy"     duplicate-line)
-                 '("\C-cx"     replace-string)
-                 '("\C-cz"     close-all-buffers)
-                 '("\M-["      beginning-of-defun)
-                 '("\M-]"      end-of-defun)
-                 '([f1]        search-forward-regexp)
-                 '([f2]        search-backward-regexp)
-                 '([f3]        xah-emacs-help)
-                 '([f5]        search-index)
-                 )))
-  (mapc (lambda (mapping)
-          (let ((key (car mapping))
-                (func (cadr mapping)))
-            (progn
-              (message (format "map key %s to %s" key func))
-              (global-set-key key func))))
-        mappings))
-
-
-(defun disable-themes ()
-  (interactive)
-  "Disable all loaded themes"
-  (mapc 'disable-theme custom-enabled-themes))
-
-(defun toggle-window-split ()
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-	     (next-win-buffer (window-buffer (next-window)))
-	     (this-win-edges (window-edges (selected-window)))
-	     (next-win-edges (window-edges (next-window)))
-	     (this-win-2nd (not (and (<= (car this-win-edges)
-					 (car next-win-edges))
-				     (<= (cadr this-win-edges)
-					 (cadr next-win-edges)))))
-	     (splitter
-	      (if (= (car this-win-edges)
-		     (car (window-edges (next-window))))
-		  'split-window-horizontally
-		'split-window-vertically)))
-	(delete-other-windows)
-	(let ((first-win (selected-funcall)))
-	  (window splitter)
-	  (if this-win-2nd (other-window 1))
-	  (set-window-buffer (selected-window) this-win-buffer)
-	  (set-window-buffer (next-window) next-win-buffer)
-	  (select-window first-win)
-	  (if this-win-2nd (other-window 1))))))
-
-
-(global-set-key (kbd "s-.") 'ripgrep-regexp)
-(global-set-key (kbd "s-a") 'package-list-packages)
-(global-set-key (kbd "s-c") 'cua-mode)
-(global-set-key (kbd "s-b") 'indent-buffer)
-(global-set-key (kbd "s-p") 'paredit-mode)
-(global-set-key (kbd "s-r") 'replace-regexp)
-(global-set-key (kbd "s-s") 'replace-string)
-(global-set-key (kbd "s-l") 'load-theme)
-(global-set-key (kbd "s-m") 'magit-status)
-(global-set-key (kbd "s-t") 'toggle-window-split)
-(global-set-key (kbd "s-v") 'magit-diff)
-(global-set-key (kbd "s-n") 'magit-blame)
-(global-set-key (kbd "s-/") 'comment-line-or-region)
-(global-set-key (kbd "s-\\") 'uncomment-line-or-region)
-(global-set-key (kbd "s-d") 'disable-themes)
-(global-set-key (kbd "s-w") 'whack-whitespace)
-
-
-;; (define-key clojure-mode-map (kbd "M-r") 'cider-namespace-refresh)
-
-(defadvice load-theme (before disable-before-load)
-  "Disable any loaded themes before enabling a new theme.
- This prevents overlapping themes; something I would rarely want."
-  (cl-loop for theme in custom-enabled-themes
-           when (not (string-match "airline" (symbol-name theme)))
-           do
-           (disable-theme theme)))
-
-(ad-activate 'load-theme)
-
-(load-theme 'airline-cool)
-(load-theme 'atom-one-dark)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Inherit shell environment on OS X ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-copy-env "DYLD_LIBRARY_PATH")
-  (exec-path-from-shell-initialize))
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Misc functions  ;;
-;;;;;;;;;;;;;;;;;;;;;
-
-(defun confirm-exit-emacs ()
-  "ask for confirmation before exiting emacs"
-  (interactive)
-  (if (yes-or-no-p "Are you sure you want to exit? ")
-      (progn
-        (save-buffers-kill-emacs))))
-
-(global-unset-key "\C-x\C-c")
-(global-set-key "\C-x\C-c" 'confirm-exit-emacs)
-
-
-;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; ;; Replace "sbcl" with the path to your implementation
-;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
-
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . dark))
-
-
-(unless window-system
-  (define-key input-decode-map "^[6~" [next])
-  (define-key input-decode-map "^[5~" [prior]))
-
-(defun helm-insert-char ()
-  (interactive)
-  (helm :sources
-      `((name . "Unicode char name")
-        (candidates . ,(ucs-names))
-        (action . insert))))
-
-
-;;;;;;;;;;;;;;;;;;
-;; Emacs Server ;;
-;;;;;;;;;;;;;;;;;;
-
-(server-start)
-
-
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
+;; END OF CONFIG FILE

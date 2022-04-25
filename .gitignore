@@ -6,3 +6,7 @@
 .emacs.d/.emacs.desktop.lock
 .emacs.d/tramp
 *#
+*eln
+*tmp
+*~
+history.el
