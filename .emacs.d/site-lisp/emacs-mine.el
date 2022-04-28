@@ -9,12 +9,13 @@
 
 (require 'package)
 
+
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
                          ("melpa-stable" . "http://stable.melpa.org/packages/")))
 
-(add-to-list 'package-pinned-packages '(cider . "melpa") t)
+(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 (package-initialize)
 
