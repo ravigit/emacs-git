@@ -10,10 +10,10 @@
 (require 'package)
 
 
-(setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
+(setq package-archives '(                        
                          ("melpa" . "http://melpa.org/packages/")
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")))
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+			 ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
